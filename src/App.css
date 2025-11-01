@@ -1,0 +1,226 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Element Selectors */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Class Selectors */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+}
+
+/* ID Selectors */
+#header {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 1rem 0;
+}
+
+/* Combinations */
+.card h3 {
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.table-wrapper > table {
+  overflow-x: auto;
+}
+
+/* Pseudo-classes */
+.table-row:hover {
+  background-color: #f3f4f6;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+/* Flexbox */
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Media Queries */
+@media (max-width: 640px) {
+  .container {
+    padding: 0.5rem;
+  }
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Crypto-specific styles */
+.price-positive {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.price-negative {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-grid .full-width {
+  grid-column: span 2;
+}
+
+/* Additional Crypto Components */
+.coin-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+.coin-name-cell {
+  display: flex;
+  align-items: center;
+}
+
+.coin-symbol {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.refresh-button {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: opacity 0.2s;
+}
+
+.refresh-button:hover {
+  opacity: 0.9;
+}
+
+.portfolio-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #e0f2fe;
+}
+
+/* Enhanced Table Styles */
+.crypto-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 10;
+}
+
+/* Form Element Styles */
+.search-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+/* Tablet and Mobile Optimization */
+@media (max-width: 768px) {
+  .coin-name-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .coin-symbol {
+    margin-left: 2.25rem;
+  }
+}
