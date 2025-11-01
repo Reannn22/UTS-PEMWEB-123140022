@@ -1,13 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
-import './App.css';
-import { getCoinsMarkets } from './utils/api';
-import Header from './components/Header';
-import SearchForm from './components/SearchForm';
-import DataTable from './components/DataTable';
-import DetailCard from './components/DetailCard';
-import PortfolioCalculator from './components/PortfolioCalculator';
-import Loading from './components/Loading';
-import ErrorMessage from './components/ErrorMessage';
+import { useState, useEffect, useCallback } from "react";
+import "./App.css";
+import { getCoinsMarkets } from "./utils/api";
+import Header from "./components/Header";
+import SearchForm from "./components/SearchForm";
+import DataTable from "./components/DataTable";
+import DetailCard from "./components/DetailCard";
+import PortfolioCalculator from "./components/PortfolioCalculator";
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/ErrorMessage";
+import Footer from "./components/Footer";
 
 function App() {
   const [coins, setCoins] = useState([]);
@@ -47,30 +48,31 @@ function App() {
   };
 
   return (
-    <div id="main-content">
+    <div className="min-h-screen flex flex-col">
       <Header onRefresh={handleRefresh} loading={loading} />
-      
-      {!showDetail ? (
-        <div className="container">
-          <SearchForm onSearch={handleSearch} />
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <ErrorMessage message={error} onRetry={handleRefresh} />
-          ) : (
-            <DataTable 
-              coins={coins} 
-              onViewDetail={handleViewDetail}
-            />
-          )}
-          <PortfolioCalculator coins={coins} />
-        </div>
-      ) : (
-        <DetailCard 
-          coinId={selectedCoin} 
-          onBack={() => setShowDetail(false)} 
-        />
-      )}
+
+      <main className="flex-1">
+        {!showDetail ? (
+          <div className="container mx-auto px-4 py-6">
+            <SearchForm onSearch={handleSearch} />
+            {loading ? (
+              <Loading />
+            ) : error ? (
+              <ErrorMessage message={error} onRetry={handleRefresh} />
+            ) : (
+              <DataTable coins={coins} onViewDetail={handleViewDetail} />
+            )}
+            <PortfolioCalculator coins={coins} />
+          </div>
+        ) : (
+          <DetailCard
+            coinId={selectedCoin}
+            onBack={() => setShowDetail(false)}
+          />
+        )}
+      </main>
+
+      <Footer />
     </div>
   );
 }

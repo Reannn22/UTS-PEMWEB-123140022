@@ -1,31 +1,33 @@
-import { useState } from 'react';
-import { formatCurrency } from '../utils/helpers';
+import { useState } from "react";
+import { formatCurrency } from "../utils/helpers";
 
 const PortfolioCalculator = ({ coins }) => {
-  const [selectedCoin, setSelectedCoin] = useState('');
-  const [amount, setAmount] = useState('');
+  const [selectedCoin, setSelectedCoin] = useState("");
+  const [amount, setAmount] = useState("");
   const [totalValue, setTotalValue] = useState(null);
 
   const handleCalculate = () => {
-    const coin = coins.find(c => c.id === selectedCoin);
+    const coin = coins.find((c) => c.id === selectedCoin);
     if (coin && amount) {
       setTotalValue(coin.current_price * Number(amount));
     }
   };
 
   const handleReset = () => {
-    setSelectedCoin('');
-    setAmount('');
+    setSelectedCoin("");
+    setAmount("");
     setTotalValue(null);
   };
 
   return (
     <div className="card portfolio-card mt-6">
       <h3 className="text-lg font-semibold mb-4">Portfolio Calculator</h3>
-      
+
       <div className="form-grid">
         <div>
-          <label htmlFor="coin" className="block mb-1">Select Coin</label>
+          <label htmlFor="coin" className="block mb-1">
+            Select Coin
+          </label>
           <select
             id="coin"
             className="search-input"
@@ -34,7 +36,7 @@ const PortfolioCalculator = ({ coins }) => {
             required
           >
             <option value="">Select a coin</option>
-            {coins.map(coin => (
+            {coins.map((coin) => (
               <option key={coin.id} value={coin.id}>
                 {coin.name} ({coin.symbol.toUpperCase()})
               </option>
@@ -43,7 +45,9 @@ const PortfolioCalculator = ({ coins }) => {
         </div>
 
         <div>
-          <label htmlFor="amount" className="block mb-1">Amount</label>
+          <label htmlFor="amount" className="block mb-1">
+            Amount
+          </label>
           <input
             type="number"
             id="amount"
@@ -56,7 +60,7 @@ const PortfolioCalculator = ({ coins }) => {
           />
         </div>
 
-        <button 
+        <button
           onClick={handleCalculate}
           className="refresh-button"
           disabled={!selectedCoin || !amount}
@@ -64,10 +68,10 @@ const PortfolioCalculator = ({ coins }) => {
           Calculate
         </button>
 
-        <button 
+        <button
           onClick={handleReset}
           className="refresh-button"
-          style={{ background: '#4b5563' }}
+          style={{ background: "#4b5563" }}
         >
           Reset
         </button>

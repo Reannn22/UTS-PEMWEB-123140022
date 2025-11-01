@@ -1,4 +1,8 @@
-import { formatCurrency, formatNumber, formatPercentage } from '../utils/helpers';
+import {
+  formatCurrency,
+  formatNumber,
+  formatPercentage,
+} from "../utils/helpers";
 
 const DataTable = ({ coins, onViewDetail }) => {
   if (!coins?.length) {
@@ -25,9 +29,9 @@ const DataTable = ({ coins, onViewDetail }) => {
                 <td>{index + 1}</td>
                 <td>
                   <div className="coin-name-cell">
-                    <img 
-                      src={coin.image} 
-                      alt={coin.name} 
+                    <img
+                      src={coin.image}
+                      alt={coin.name}
                       className="coin-logo"
                       loading="lazy"
                     />
@@ -38,11 +42,11 @@ const DataTable = ({ coins, onViewDetail }) => {
                   </div>
                 </td>
                 <td>{formatCurrency(coin.current_price)}</td>
-                <td 
+                <td
                   className={
-                    coin.price_change_percentage_24h >= 0 
-                      ? 'price-positive' 
-                      : 'price-negative'
+                    coin.price_change_percentage_24h >= 0
+                      ? "price-positive"
+                      : "price-negative"
                   }
                 >
                   {formatPercentage(coin.price_change_percentage_24h)}

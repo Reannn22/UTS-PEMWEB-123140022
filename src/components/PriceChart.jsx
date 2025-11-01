@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { getCoinMarketChart } from '../utils/api';
-import { formatCurrency, formatDate } from '../utils/helpers';
-import Loading from './Loading';
+import { useState, useEffect } from "react";
+import { getCoinMarketChart } from "../utils/api";
+import { formatCurrency, formatDate } from "../utils/helpers";
+import Loading from "./Loading";
 
 let Chart;
 try {
-  const { Line } = require('react-chartjs-2');
+  const { Line } = require("react-chartjs-2");
   const {
     Chart: ChartJS,
     CategoryScale,
@@ -14,8 +14,8 @@ try {
     LineElement,
     Title,
     Tooltip,
-    Legend
-  } = require('chart.js');
+    Legend,
+  } = require("chart.js");
 
   ChartJS.register(
     CategoryScale,
@@ -26,10 +26,10 @@ try {
     Tooltip,
     Legend
   );
-  
+
   Chart = Line;
 } catch (err) {
-  console.error('Chart.js failed to load:', err);
+  console.error("Chart.js failed to load:", err);
 }
 
 const PriceChart = ({ coinId }) => {
@@ -40,7 +40,7 @@ const PriceChart = ({ coinId }) => {
   useEffect(() => {
     const fetchChartData = async () => {
       if (!Chart) {
-        setError('Chart component failed to load');
+        setError("Chart component failed to load");
         setLoading(false);
         return;
       }
@@ -48,24 +48,24 @@ const PriceChart = ({ coinId }) => {
       try {
         setLoading(true);
         const data = await getCoinMarketChart(coinId, 7);
-        
+
         const prices = data.prices.map(([timestamp, price]) => ({
           x: formatDate(timestamp),
-          y: price
+          y: price,
         }));
 
         setChartData({
-          labels: prices.map(p => p.x),
+          labels: prices.map((p) => p.x),
           datasets: [
             {
-              label: 'Price',
-              data: prices.map(p => p.y),
-              borderColor: '#667eea',
-              backgroundColor: 'rgba(102, 126, 234, 0.1)',
+              label: "Price",
+              data: prices.map((p) => p.y),
+              borderColor: "#667eea",
+              backgroundColor: "rgba(102, 126, 234, 0.1)",
               fill: true,
-              tension: 0.4
-            }
-          ]
+              tension: 0.4,
+            },
+          ],
         });
       } catch (err) {
         setError(err.message);
@@ -85,21 +85,21 @@ const PriceChart = ({ coinId }) => {
     responsive: true,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Price: ${formatCurrency(context.raw)}`
-        }
-      }
+          label: (context) => `Price: ${formatCurrency(context.raw)}`,
+        },
+      },
     },
     scales: {
       y: {
         ticks: {
-          callback: (value) => formatCurrency(value)
-        }
-      }
-    }
+          callback: (value) => formatCurrency(value),
+        },
+      },
+    },
   };
 
   return (

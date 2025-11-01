@@ -224,3 +224,13 @@ tr:nth-child(even) {
     margin-left: 2.25rem;
   }
 }
+
+/* Add spacing for fixed header */
+#main-content {
+  padding-top: 2rem; /* Reduced from 2.5rem */
+}
+
+/* Ensure content doesn't overlap with fixed header */
+.container {
+  margin-top: 1rem;
+}
