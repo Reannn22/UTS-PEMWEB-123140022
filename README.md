@@ -170,3 +170,138 @@ Features:
 └── vercel.json        # Vercel deployment
 ```
 
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Git
+- CoinGecko API Key
+
+### Installation Steps
+
+1. Clone the repository
+```bash
+git clone https://github.com/Reannn22/UTS-PEMWEB-123140022.git
+cd UTS-PEMWEB-123140022
+```
+
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Setup environment variables
+Create a `.env` file in the root directory:
+```env
+REACT_APP_COINGECKO_API_KEY=your_coingecko_api_key
+```
+
+4. Run the development server
+```bash
+npm start
+# or
+yarn start
+```
+
+5. Build for production
+```bash
+npm run build
+# or
+yarn build
+```
+
+6. Deploy
+Follow the deployment instructions for your preferred hosting provider.
+
+## 🚀 Deployment to Vercel
+
+### Prerequisites
+- [Vercel Account](https://vercel.com/signup)
+- [Vercel CLI](https://vercel.com/cli)
+- [Git](https://git-scm.com/downloads)
+
+### Steps to Deploy
+
+1. Install Vercel CLI
+```bash
+npm i -g vercel
+```
+
+2. Login to Vercel
+```bash
+vercel login
+```
+
+3. Configure Environment Variables in Vercel
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Select your project
+   - Go to Settings > Environment Variables
+   - Add the following variables:
+     ```
+     REACT_APP_COINGECKO_API_KEY=your_api_key
+     REACT_APP_COINGECKO_API_URL=https://api.coingecko.com/api/v3
+     ```
+
+4. Deploy
+```bash
+vercel --prod
+```
+
+### Automatic Deployments
+
+1. Push your code to GitHub
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
+
+2. Connect to Vercel
+- Go to [Vercel Dashboard](https://vercel.com/new)
+- Import your GitHub repository
+- Configure project settings:
+  - Framework Preset: Create React App
+  - Build Command: `npm run build`
+  - Output Directory: `build`
+  - Install Command: `npm install`
+
+3. Environment Variables
+- Add the same environment variables in the Vercel project settings
+
+Your app will now automatically deploy on every push to the main branch.
+
+## 🔑 Getting CoinGecko API Key
+
+1. Create CoinGecko Account
+   - Visit [CoinGecko](https://www.coingecko.com/)
+   - Click "Sign Up" in the top right corner
+   - Fill in your details and create account
+   - Verify your email address
+
+2. Subscribe to API Plan
+   - Go to [CoinGecko API Plans](https://www.coingecko.com/en/api/pricing)
+   - Choose your plan (Demo/Basic works for this project)
+   - Click "Subscribe"
+   - Complete the subscription process
+
+3. Get Your API Key
+   - Navigate to [API Dashboard](https://www.coingecko.com/en/api/dashboard)
+   - Under "API Keys", you'll find your key
+   - Copy the API key
+
+4. Add API Key to Project
+   ```env
+   REACT_APP_COINGECKO_API_KEY=your_copied_api_key_here
+   REACT_APP_COINGECKO_API_URL=https://api.coingecko.com/api/v3
+   ```
+
+5. API Rate Limits
+   - Demo: 10-30 calls/minute
+   - Basic: 50 calls/minute
+   - Higher tiers available for more requests
+
+Note: Keep your API key secret and never commit it to version control.
+
