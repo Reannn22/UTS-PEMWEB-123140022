@@ -24,24 +24,32 @@ const getFromCache = (key) => {
 // Update fetchLocalJson function
 const fetchLocalJson = async (filename) => {
   try {
-    const basePath = process.env.NODE_ENV === 'production' 
-      ? process.env.VERCEL_URL 
-      : '';
-    
-    const response = await fetch(`${basePath}/data/${filename}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
-      }
-    });
+    // Try both relative and absolute paths
+    const paths = [
+      `/data/${filename}`,
+      `${process.env.PUBLIC_URL}/data/${filename}`,
+      `${window.location.origin}/data/${filename}`
+    ];
 
-    if (!response.ok) {
-      console.error(`HTTP error! status: ${response.status}`);
-      return null;
+    let response;
+    for (const path of paths) {
+      try {
+        response = await fetch(path, {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        if (response.ok) break;
+      } catch (e) {
+        console.warn(`Failed to fetch from ${path}`);
+      }
     }
 
-    const data = await response.json();
-    return data;
+    if (!response?.ok) {
+      throw new Error('Failed to fetch local JSON');
+    }
+
+    return await response.json();
   } catch (error) {
     console.error(`Error loading ${filename}:`, error);
     return null;
