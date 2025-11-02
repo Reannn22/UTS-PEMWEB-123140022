@@ -179,6 +179,8 @@ export const translations = {
       actions: "Aksi",
       remove: "Hapus",
       noItems: "Tidak ada item di portofolio",
+      emptyPortfolio: "Portfolio Anda masih kosong. Mulai dengan mencari dan menambahkan koin.",
+      noSearchResults: "Tidak ada hasil pencarian. Coba kata kunci lain.",
     },
     portfolioCalculator: {
       title: "Kalkulator Portfolio",
@@ -374,6 +376,8 @@ export const translations = {
       actions: "Actions",
       remove: "Remove",
       noItems: "No items in portfolio",
+      emptyPortfolio: "Your portfolio is empty. Start by searching and adding coins.",
+      noSearchResults: "No search results found. Try different keywords.",
     },
     portfolioCalculator: {
       title: "Portfolio Calculator",

@@ -373,7 +373,7 @@ const Header = () => {
           {/* Updated Actions Group */}
           <div className="flex items-center">
             {/* Updated Desktop Search Bar */}
-            <div className="hidden lg:block relative mr-4">
+            <div className="hidden lg:block relative mr-4 scrollbar-hide">
               <input
                 type="text"
                 value={searchValue}
