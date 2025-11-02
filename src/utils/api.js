@@ -6,12 +6,10 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
-// Simplified cache helpers without expiration
-const CACHE_PREFIX = 'crypto_';
-
+// Add cache helper functions
 const saveToCache = (key, data) => {
   try {
-    localStorage.setItem(`${CACHE_PREFIX}${key}`, JSON.stringify(data));
+    localStorage.setItem(key, JSON.stringify(data));
   } catch (error) {
     console.error('Error saving to cache:', error);
   }
@@ -19,8 +17,8 @@ const saveToCache = (key, data) => {
 
 const getFromCache = (key) => {
   try {
-    const cached = localStorage.getItem(`${CACHE_PREFIX}${key}`);
-    return cached ? JSON.parse(cached) : null;
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
   } catch (error) {
     console.error('Error reading from cache:', error);
     return null;
@@ -28,14 +26,6 @@ const getFromCache = (key) => {
 };
 
 export const getCoinsMarkets = async (params = {}) => {
-  const cacheKey = `markets_${JSON.stringify(params)}`;
-  const cachedData = getFromCache(cacheKey);
-
-  if (cachedData) {
-    console.log('Using cached market data');
-    return cachedData;
-  }
-
   try {
     const queryParams = new URLSearchParams({
       vs_currency: DEFAULT_CURRENCY,
@@ -48,23 +38,19 @@ export const getCoinsMarkets = async (params = {}) => {
 
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${queryParams}`,
-      { method: 'GET', headers }
+      { 
+        method: 'GET',
+        headers 
+      }
     );
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
 
-    const data = await response.json();
-    saveToCache(cacheKey, data);
-    return data;
+    return await response.json();
   } catch (error) {
     console.error('API request failed:', error);
-    const cachedFallback = getFromCache(cacheKey);
-    if (cachedFallback) {
-      console.log('Using cached fallback data');
-      return cachedFallback;
-    }
     throw error;
   }
 };
@@ -89,14 +75,6 @@ export const getCoinDetail = async (coinId) => {
 };
 
 export const getCoinMarketChart = async (coinId, days = 7) => {
-  const cacheKey = `chart_${coinId}_${days}`;
-  const cachedData = getFromCache(cacheKey);
-
-  if (cachedData) {
-    console.log('Using cached chart data');
-    return cachedData;
-  }
-
   try {
     const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
@@ -104,9 +82,7 @@ export const getCoinMarketChart = async (coinId, days = 7) => {
       { headers }
     );
     if (!response.ok) throw new Error('Failed to fetch market chart data');
-    const data = await response.json();
-    saveToCache(cacheKey, data);
-    return data;
+    return await response.json();
   } catch (error) {
     throw error;
   }
