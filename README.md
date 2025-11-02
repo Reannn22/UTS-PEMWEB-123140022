@@ -7,12 +7,14 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 ## ✨ Features
 
 ### 🏠 Homepage
+
 - Modern, responsive hero section
 - Quick access to key features
 - Real-time cryptocurrency statistics
 - Smooth animations and transitions
 
 ### 📊 Cryptocurrency List
+
 - Real-time price updates
 - Advanced filtering options:
   - Trending coins
@@ -25,6 +27,7 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 ![Crypto List](./src/assets/images/screenshots/cryptolist.png)
 
 ### 📈 Chart Analysis
+
 - Interactive price charts
 - Multiple timeframes (24H, 7D, 30D, 90D, 1Y)
 - Chart types:
@@ -36,6 +39,7 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 ![Chart Page](./src/assets/images/screenshots/chartpage.png)
 
 ### 💼 Portfolio Calculator
+
 - Add/remove coins
 - Real-time portfolio valuation
 - Holdings breakdown
@@ -45,11 +49,13 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 ![Portfolio](./src/assets/images/screenshots/portfolio.png)
 
 ### 🌐 Internationalization
+
 - Multi-language support (English & Indonesian)
 - Currency conversion
 - Localized number formatting
 
 ### 🎨 Theme Support
+
 - Light/Dark mode
 - Persistent theme preference
 - Smooth transitions
