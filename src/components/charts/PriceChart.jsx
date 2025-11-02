@@ -99,10 +99,20 @@ const PriceChart = ({
               // Add completed candle
               candleData.push({
                 x: currentWindow.timestamp,
-                o: lang === "id" ? currentWindow.open * 15500 : currentWindow.open,
-                h: lang === "id" ? currentWindow.high * 15500 : currentWindow.high,
-                l: lang === "id" ? currentWindow.low * 15500 : currentWindow.low,
-                c: lang === "id" ? currentWindow.close * 15500 : currentWindow.close,
+                o:
+                  lang === "id"
+                    ? currentWindow.open * 15500
+                    : currentWindow.open,
+                h:
+                  lang === "id"
+                    ? currentWindow.high * 15500
+                    : currentWindow.high,
+                l:
+                  lang === "id" ? currentWindow.low * 15500 : currentWindow.low,
+                c:
+                  lang === "id"
+                    ? currentWindow.close * 15500
+                    : currentWindow.close,
               });
 
               // Start new window

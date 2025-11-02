@@ -54,19 +54,31 @@ const fetchLocalJson = async (filename) => {
 
 export const getCoinsMarkets = async (params = {}) => {
   try {
-    // Always try local data first
+    // Selalu coba data lokal dulu
     const localData = await fetchLocalJson('cryptocurrencylist.json');
     if (localData) {
       console.log('Using local cryptocurrency data');
       return localData;
     }
-    // Fallback to API only if local fails
+    
+    // Fallback ke API jika lokal gagal
     console.log('Falling back to API for cryptocurrency data');
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams(params)}`,
       { headers }
     );
-    if (!response.ok) throw new Error('Failed to fetch coins data');
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch coins data (Status: ${response.status})`);
+    }
+
+    // --- TAMBAHKAN PENGECEKAN INI ---
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('API fallback did not return JSON. Check API_BASE_URL.');
+    }
+    // --- AKHIR PENGECEKAN ---
+
     return await response.json();
   } catch (error) {
     throw error;
