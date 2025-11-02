@@ -4,19 +4,6 @@
   "outputDirectory": "build",
   "routes": [
     {
-      "src": "/data/(.*)",
-      "headers": {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "s-maxage=3600"
-      },
-      "dest": "/data/$1"
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
       "handle": "filesystem"
     },
     {
