@@ -24,7 +24,11 @@ const getFromCache = (key) => {
 // Update fetchLocalJson function
 const fetchLocalJson = async (filename) => {
   try {
-    const response = await fetch(`/data/${filename}`, {
+    const basePath = process.env.NODE_ENV === 'production' 
+      ? process.env.VERCEL_URL 
+      : '';
+    
+    const response = await fetch(`${basePath}/data/${filename}`, {
       headers: {
         'Accept': 'application/json',
         'Cache-Control': 'no-cache'
@@ -36,14 +40,8 @@ const fetchLocalJson = async (filename) => {
       return null;
     }
 
-    const text = await response.text();
-    try {
-      const cleanText = text.replace(/^\uFEFF/, ''); // Remove BOM if present
-      return JSON.parse(cleanText);
-    } catch (parseError) {
-      console.error('JSON Parse Error:', parseError);
-      return null;
-    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(`Error loading ${filename}:`, error);
     return null;
