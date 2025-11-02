@@ -75,3 +75,31 @@ export const getCoinMarketChart = async (coinId, days = 7) => {
     throw new Error(`Error fetching market chart: ${error.message}`);
   }
 };
+
+export const getCoinOhlc = async (coinId, days) => {
+  try {
+    if (!coinId) throw new Error("Coin ID is required");
+
+    // Gunakan 'DEFAULT_CURRENCY' agar konsisten dengan fungsi lain
+    const params = new URLSearchParams({
+      vs_currency: DEFAULT_CURRENCY,
+      days: days.toString(),
+    });
+
+    // Endpoint ini mengambil data Open, High, Low, Close (OHLC)
+    // Menggunakan pola fetch() yang sama dengan fungsi lain
+    const response = await fetch(
+      `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/ohlc?${params}`,
+      { headers }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch coin OHLC data");
+    }
+
+    return await response.json(); // Menggunakan .json() sama seperti fetch() lainnya
+  } catch (error) {
+    console.error("Error fetching coin OHLC data:", error);
+    throw error;
+  }
+};

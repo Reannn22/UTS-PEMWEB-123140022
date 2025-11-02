@@ -10,8 +10,10 @@ import {
 import chevronLeft from "../../assets/icons/chevron-left.svg";
 import chevronRight from "../../assets/icons/chevron-right.svg";
 import { translations } from "../../utils/translations";
+import { useNavigate } from "react-router-dom";
 
 export default function CryptocurrencyList() {
+  const navigate = useNavigate();
   const { isDark } = useTheme();
   const { lang } = useLanguage();
   const t = translations[lang].cryptoList;
@@ -189,6 +191,10 @@ export default function CryptocurrencyList() {
     }
   };
 
+  const handleCoinClick = (coinId) => {
+    navigate(`/coin/${coinId}`);
+  };
+
   useEffect(() => {
     const handleHeaderSearch = (e) => {
       const value = e.detail.value;
@@ -291,9 +297,12 @@ export default function CryptocurrencyList() {
                     {filteredCoins.map((coin, index) => (
                       <tr
                         key={coin.id}
+                        onClick={() => handleCoinClick(coin.id)}
                         className={`border-t ${
                           isDark ? "border-gray-700" : "border-gray-300"
-                        }`}
+                        } cursor-pointer hover:${
+                          isDark ? "bg-gray-800" : "bg-gray-50"
+                        } transition-colors`}
                       >
                         <td
                           className={`p-4 ${
@@ -360,9 +369,14 @@ export default function CryptocurrencyList() {
                 {filteredCoins.map((coin, index) => (
                   <div
                     key={coin.id}
+                    onClick={() => handleCoinClick(coin.id)}
                     className={`p-4 rounded-lg ${
                       isDark ? "bg-gray-800" : "bg-white"
-                    } border ${isDark ? "border-gray-700" : "border-gray-300"}`}
+                    } border ${
+                      isDark ? "border-gray-700" : "border-gray-300"
+                    } cursor-pointer hover:${
+                      isDark ? "bg-gray-700" : "bg-gray-50"
+                    } transition-colors`}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">

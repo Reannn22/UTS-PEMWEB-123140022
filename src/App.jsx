@@ -2,19 +2,18 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
 import { HomePage } from "./components";
 import { LanguageProvider } from "./context/LanguageContext";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import About from "./components/pages/About";
 import Contact from "./components/pages/Contact";
 import Privacy from "./components/pages/Privacy";
 import Terms from "./components/pages/Terms";
 import CryptocurrencyList from "./components/pages/CryptocurrencyList";
+import ChartPage from "./components/pages/ChartPage";
 import { BrowserRouter } from "react-router-dom";
 import { ScrollToTop } from "./components";
+import PriceChart from "./components/charts/PriceChart";
 
 function App() {
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-  const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlLang = params.get("lang");
@@ -28,13 +27,6 @@ function App() {
       localStorage.setItem("theme", urlTheme);
     }
   }, []);
-
-  const handleRefresh = async () => {
-    setLoading(true);
-    // Add your refresh logic here
-    setLastUpdated(new Date());
-    setTimeout(() => setLoading(false), 1000);
-  };
 
   return (
     <BrowserRouter>
@@ -51,6 +43,7 @@ function App() {
               path="/cryptocurrencylist"
               element={<CryptocurrencyList />}
             />
+            <Route path="/coin/:coinId" element={<ChartPage />} />
           </Routes>
         </ThemeProvider>
       </LanguageProvider>

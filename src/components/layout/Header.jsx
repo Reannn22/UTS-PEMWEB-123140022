@@ -189,15 +189,17 @@ const Header = () => {
     setSearchValue(searchParam);
   }, []);
 
-  // Add function to check if menu item is active
+  // Update isMenuActive function
   const isMenuActive = (href) => {
+    const currentPath = window.location.pathname;
     if (href === "/") {
-      return (
-        window.location.pathname === "/" || window.location.pathname === ""
-      );
+      return currentPath === "/" || currentPath === "";
     }
     if (href === "/cryptocurrencylist") {
-      return window.location.pathname === "/cryptocurrencylist";
+      return (
+        currentPath === "/cryptocurrencylist" ||
+        currentPath.startsWith("/coin/")
+      );
     }
     return window.location.hash === href;
   };

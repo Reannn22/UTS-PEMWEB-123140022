@@ -49,6 +49,12 @@ export const translations = {
       vision: {
         title: "Our Vision",
         description: "To become the leading platform for cryptocurrency tracking and portfolio management, making crypto trading accessible and efficient for everyone."
+      },
+      stats: {
+        activeUsers: "Active Users",
+        globalMarkets: "Global Markets",
+        dailyTransactions: "Daily Transactions",
+        teamMembers: "Team Members"
       }
     },
     contact: {
@@ -63,10 +69,19 @@ export const translations = {
         sending: "Sending...",
         success: "Thank you! Your message has been sent successfully.",
         error: "Oops! Something went wrong. Please try again."
+      },
+      info: {
+        address: "Address",
+        addressDetail: "123 Crypto Street, Digital City",
+        phone: "Phone",
+        phoneNumber: "+1 234 567 890",
+        email: "Email",
+        emailAddress: "support@cryptotracker.com"
       }
     },
     privacy: {
       title: "Privacy Policy",
+      lastUpdated: "Last Updated",
       sections: [
         {
           title: "Information Collection",
@@ -79,11 +94,16 @@ export const translations = {
         {
           title: "Data Protection",
           content: "We implement strong security measures to protect your personal information from unauthorized access."
+        },
+        {
+          title: "Data Storage",
+          content: "Your data is stored securely in encrypted form on our servers."
         }
       ]
     },
     terms: {
       title: "Terms of Service",
+      lastUpdated: "Last Updated",
       sections: [
         {
           title: "Agreement to Terms",
@@ -96,6 +116,10 @@ export const translations = {
         {
           title: "Service Usage",
           content: "Our services must be used in accordance with applicable laws and regulations."
+        },
+        {
+          title: "Service Modifications",
+          content: "We reserve the right to modify or discontinue our services at any time."
         }
       ]
     },
@@ -115,6 +139,22 @@ export const translations = {
         gainers: "Top Gainers",
         losers: "Top Losers"
       }
+    },
+    chart: {
+      timeRanges: {
+        "1": "24H",
+        "7": "7D",
+        "30": "30D",
+        "90": "90D",
+        "365": "1Y"
+      },
+      chartTypes: {
+        line: "Line",
+        candle: "Candle"  // Changed from candlestick to shorter version
+      },
+      back: "Back",
+      price: "Price",
+      volume: "Volume"
     }
   },
   id: {
@@ -167,6 +207,12 @@ export const translations = {
       vision: {
         title: "Visi Kami",
         description: "Menjadi platform terdepan untuk pelacakan cryptocurrency dan manajemen portofolio, membuat trading crypto dapat diakses dan efisien untuk semua orang."
+      },
+      stats: {
+        activeUsers: "Pengguna Aktif",
+        globalMarkets: "Pasar Global",
+        dailyTransactions: "Transaksi Harian",
+        teamMembers: "Anggota Tim"
       }
     },
     contact: {
@@ -181,10 +227,19 @@ export const translations = {
         sending: "Mengirim...",
         success: "Terima kasih! Pesan Anda telah berhasil dikirim.",
         error: "Maaf! Terjadi kesalahan. Silakan coba lagi."
+      },
+      info: {
+        address: "Alamat",
+        addressDetail: "Jalan Crypto 123, Kota Digital",
+        phone: "Telepon",
+        phoneNumber: "+1 234 567 890",
+        email: "Email",
+        emailAddress: "support@cryptotracker.com"
       }
     },
     privacy: {
       title: "Kebijakan Privasi",
+      lastUpdated: "Terakhir Diperbarui",
       sections: [
         {
           title: "Pengumpulan Informasi",
@@ -197,11 +252,16 @@ export const translations = {
         {
           title: "Perlindungan Data",
           content: "Kami menerapkan langkah-langkah keamanan yang kuat untuk melindungi informasi pribadi Anda dari akses yang tidak sah."
+        },
+        {
+          title: "Penyimpanan Data",
+          content: "Data Anda disimpan secara aman dalam bentuk terenkripsi di server kami."
         }
       ]
     },
     terms: {
       title: "Ketentuan Layanan",
+      lastUpdated: "Terakhir Diperbarui",
       sections: [
         {
           title: "Persetujuan Ketentuan",
@@ -214,6 +274,10 @@ export const translations = {
         {
           title: "Penggunaan Layanan",
           content: "Layanan kami harus digunakan sesuai dengan hukum dan peraturan yang berlaku."
+        },
+        {
+          title: "Modifikasi Layanan",
+          content: "Kami berhak untuk memodifikasi atau menghentikan layanan kami kapan saja."
         }
       ]
     },
@@ -233,6 +297,22 @@ export const translations = {
         gainers: "Kenaikan Tertinggi",
         losers: "Penurunan Tertinggi"
       }
+    },
+    chart: {
+      timeRanges: {
+        "1": "24J",
+        "7": "7H",
+        "30": "30H",
+        "90": "90H",
+        "365": "1T"
+      },
+      chartTypes: {
+        line: "Garis",
+        candle: "Lilin"  // Changed to Indonesian version
+      },
+      back: "Kembali",
+      price: "Harga",
+      volume: "Volume"
     }
   }
 };

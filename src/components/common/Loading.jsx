@@ -1,6 +1,6 @@
 import { useTheme } from "../../context/ThemeContext";
 
-const Loading = ({ type = "spinner" }) => {
+const Loading = ({ type = "skeleton" }) => {
   const { isDark } = useTheme();
 
   if (type === "skeleton") {
