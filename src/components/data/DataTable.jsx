@@ -2,7 +2,7 @@ import {
   formatCurrency,
   formatNumber,
   formatPercentage,
-} from "../utils/helpers";
+} from "../../utils/helpers";
 
 const DataTable = ({ coins, onViewDetail }) => {
   if (!coins?.length) {

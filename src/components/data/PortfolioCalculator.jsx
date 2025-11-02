@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatCurrency } from "../utils/helpers";
+import { formatCurrency } from "../../utils/helpers";
 
 const PortfolioCalculator = ({ coins }) => {
   const [selectedCoin, setSelectedCoin] = useState("");

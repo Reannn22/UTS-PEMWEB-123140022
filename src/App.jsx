@@ -1,79 +1,26 @@
-import { useState, useEffect, useCallback } from "react";
-import "./App.css";
-import { getCoinsMarkets } from "./utils/api";
-import Header from "./components/Header";
-import SearchForm from "./components/SearchForm";
-import DataTable from "./components/DataTable";
-import DetailCard from "./components/DetailCard";
-import PortfolioCalculator from "./components/PortfolioCalculator";
-import Loading from "./components/Loading";
-import ErrorMessage from "./components/ErrorMessage";
-import Footer from "./components/Footer";
+import { useState } from "react";
+import { ThemeProvider } from "./context/ThemeContext";
+import { HomePage } from "./components";
 
 function App() {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [filters, setFilters] = useState({});
-  const [selectedCoin, setSelectedCoin] = useState(null);
-  const [showDetail, setShowDetail] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [loading, setLoading] = useState(false);
 
-  const fetchCoins = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getCoinsMarkets(filters);
-      setCoins(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [filters]);
-
-  useEffect(() => {
-    fetchCoins();
-  }, [fetchCoins]);
-
-  const handleSearch = (filterData) => {
-    setFilters(filterData);
-    fetchCoins();
-  };
-
-  const handleRefresh = () => fetchCoins();
-
-  const handleViewDetail = (coinId) => {
-    setSelectedCoin(coinId);
-    setShowDetail(true);
+  const handleRefresh = async () => {
+    setLoading(true);
+    // Add your refresh logic here
+    setLastUpdated(new Date());
+    setTimeout(() => setLoading(false), 1000);
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header onRefresh={handleRefresh} loading={loading} />
-
-      <main className="flex-1">
-        {!showDetail ? (
-          <div className="container mx-auto px-4 py-6">
-            <SearchForm onSearch={handleSearch} />
-            {loading ? (
-              <Loading />
-            ) : error ? (
-              <ErrorMessage message={error} onRetry={handleRefresh} />
-            ) : (
-              <DataTable coins={coins} onViewDetail={handleViewDetail} />
-            )}
-            <PortfolioCalculator coins={coins} />
-          </div>
-        ) : (
-          <DetailCard
-            coinId={selectedCoin}
-            onBack={() => setShowDetail(false)}
-          />
-        )}
-      </main>
-
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <HomePage
+        onRefresh={handleRefresh}
+        loading={loading}
+        lastUpdated={lastUpdated}
+      />
+    </ThemeProvider>
   );
 }
 

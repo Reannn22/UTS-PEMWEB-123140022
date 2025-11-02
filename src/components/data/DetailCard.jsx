@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getCoinDetail } from '../utils/api';
-import { formatCurrency, formatNumber } from '../utils/helpers';
-import Loading from './Loading';
-import ErrorMessage from './ErrorMessage';
-import PriceChart from './PriceChart';
+import { getCoinDetail } from '../../utils/api';
+import { formatCurrency, formatNumber } from '../../utils/helpers';
+import Loading from '../common/Loading';
+import ErrorMessage from '../common/ErrorMessage';
+import PriceChart from '../charts/PriceChart';
 
 const DetailCard = ({ coinId, onBack }) => {
   const [coin, setCoin] = useState(null);

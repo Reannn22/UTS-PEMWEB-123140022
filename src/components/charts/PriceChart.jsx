@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getCoinMarketChart } from "../utils/api";
-import { formatCurrency, formatDate } from "../utils/helpers";
-import Loading from "./Loading";
+import { getCoinMarketChart } from "../../utils/api";
+import { formatCurrency, formatDate } from "../../utils/helpers";
+import Loading from "../common/Loading";
 
 let Chart;
 try {
