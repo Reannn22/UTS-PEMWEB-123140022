@@ -1,6 +1,10 @@
 import { API_BASE_URL, API_ENDPOINTS, DEFAULT_CURRENCY, API_KEY } from './constants';
 
-const headers = { 'X-CG-Api-Key': API_KEY };
+const headers = {
+  'X-CG-Api-Key': API_KEY,
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
 
 // Add cache helper functions
 const saveToCache = (key, data) => {
@@ -54,20 +58,30 @@ const fetchLocalJson = async (filename) => {
 
 export const getCoinsMarkets = async (params = {}) => {
   try {
+    const queryParams = new URLSearchParams({
+      vs_currency: DEFAULT_CURRENCY,
+      order: 'market_cap_desc',
+      per_page: 100,
+      page: 1,
+      sparkline: false,
+      ...params
+    });
+
     const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams({
-        vs_currency: DEFAULT_CURRENCY,
-        order: 'market_cap_desc',
-        per_page: 100,
-        page: 1,
-        sparkline: false,
-        ...params
-      })}`,
-      { headers }
+      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${queryParams}`,
+      { 
+        method: 'GET',
+        headers 
+      }
     );
-    if (!response.ok) throw new Error('Failed to fetch coins data');
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
     return await response.json();
   } catch (error) {
+    console.error('API request failed:', error);
     throw error;
   }
 };

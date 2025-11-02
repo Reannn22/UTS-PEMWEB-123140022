@@ -1,5 +1,5 @@
-export const API_KEY = 'CG-UZ1mcpTky2GzQwYzfroASbQP';
-export const API_BASE_URL = 'https://api.coingecko.com/api/v3';
+export const API_KEY = process.env.REACT_APP_COINGECKO_API_KEY;
+export const API_BASE_URL = process.env.REACT_APP_COINGECKO_API_URL;
 export const DEFAULT_CURRENCY = 'usd';
 
 export const API_ENDPOINTS = {
