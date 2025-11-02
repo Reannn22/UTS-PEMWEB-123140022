@@ -2,12 +2,12 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "public": true,
   "routes": [
     {
       "src": "/data/(.*)",
       "headers": {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "s-maxage=3600"
       },
       "dest": "/data/$1"
@@ -17,12 +17,7 @@
       "dest": "/static/$1"
     },
     {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",

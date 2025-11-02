@@ -24,29 +24,25 @@ const getFromCache = (key) => {
 // Update fetchLocalJson function
 const fetchLocalJson = async (filename) => {
   try {
-    // Try both relative and absolute paths
-    const paths = [
-      `/data/${filename}`,
-      `${process.env.PUBLIC_URL}/data/${filename}`,
-      `${window.location.origin}/data/${filename}`
-    ];
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? window.location.origin
+      : '';
 
-    let response;
-    for (const path of paths) {
-      try {
-        response = await fetch(path, {
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        if (response.ok) break;
-      } catch (e) {
-        console.warn(`Failed to fetch from ${path}`);
+    const response = await fetch(`${baseUrl}/data/${filename}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
       }
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+      throw new Error('Failed to fetch local JSON');
     }
 
-    if (!response?.ok) {
-      throw new Error('Failed to fetch local JSON');
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Invalid content type');
     }
 
     return await response.json();
