@@ -1,4 +1,205 @@
 export const translations = {
+  id: {
+    menu: {
+      home: "Beranda",
+      cryptoList: "Daftar Cryptocurrency",
+      portfolio: "Kalkulator Portfolio",
+      search: "Cari...",
+      dark: "DR",
+      light: "LG"
+    },
+    footer: {
+      about: {
+        title: "Tentang",
+        description: "Aplikasi pelacakan cryptocurrency real-time dengan notifikasi harga, manajemen portofolio, dan analisis pasar."
+      },
+      resources: {
+        title: "Sumber Daya",
+        home: "Beranda",
+        search: "Pencarian",
+        cryptoList: "Daftar Cryptocurrency",
+        portfolio: "Kalkulator Portfolio"
+      },
+      company: {
+        title: "Perusahaan",
+        about: "Tentang Kami",
+        contact: "Kontak",
+        privacy: "Kebijakan Privasi",
+        terms: "Ketentuan Layanan"
+      },
+      connect: "Hubungkan",
+      created: "Dibuat oleh",
+      rights: "Hak cipta dilindungi."
+    },
+    home: {
+      hero: {
+        title: "Masa Depan Trading Crypto",
+        description: "Rasakan pelacakan cryptocurrency real-time dengan analitik canggih dan alat manajemen portofolio yang powerful",
+        startTrading: "Mulai Trading",
+        viewMarkets: "Lihat Pasar"
+      }
+    },
+    about: {
+      title: "Tentang Kami",
+      description: "CryptoTracker adalah rekan terpercaya Anda dalam dunia trading dan investasi cryptocurrency.",
+      metrics: {
+        activeUsers: "Pengguna Aktif",
+        globalMarket: "Pasar Global",
+        dailyTransactions: "Transaksi Harian",
+        teamMembers: "Anggota Tim",
+        values: {
+          activeUsers: "10.000+",
+          globalMarket: "150+",
+          dailyTransactions: "Rp350M+",
+          teamMembers: "20+"
+        }
+      }
+    },
+    metrics: {
+      activeUsers: "Pengguna Aktif",
+      globalMarket: "Pasar Global",
+      dailyTransactions: "Transaksi Harian",
+      teamMembers: "Anggota Tim",
+      values: {
+        activeUsers: "10.000+",
+        globalMarket: "150+",
+        dailyTransactions: "Rp350M+",
+        teamMembers: "20+"
+      }
+    },
+    contact: {
+      title: "Hubungi Kami",
+      description: "Punya pertanyaan atau butuh bantuan? Kami siap membantu!",
+      form: {
+        name: "Nama Anda",
+        email: "Alamat Email",
+        subject: "Subjek",
+        message: "Pesan Anda",
+        submit: "Kirim Pesan",
+        sending: "Mengirim...",
+        success: "Terima kasih! Pesan Anda telah berhasil dikirim.",
+        error: "Maaf! Terjadi kesalahan. Silakan coba lagi."
+      },
+      info: {
+        address: "Alamat",
+        addressDetail: "Jalan Crypto 123, Kota Digital",
+        phone: "Telepon",
+        phoneNumber: "+1 234 567 890",
+        email: "Email",
+        emailAddress: "support@cryptotracker.com"
+      }
+    },
+    privacy: {
+      title: "Kebijakan Privasi",
+      lastUpdated: "Terakhir Diperbarui",
+      sections: [
+        {
+          title: "Pengumpulan Informasi",
+          content: "Kami mengumpulkan informasi untuk memberikan layanan yang lebih baik kepada pengguna dan meningkatkan keamanan platform kami."
+        },
+        {
+          title: "Penggunaan Data",
+          content: "Kami menggunakan data yang dikumpulkan untuk mengoperasikan dan meningkatkan layanan kami, mengembangkan fitur baru, dan melindungi pengguna kami."
+        },
+        {
+          title: "Perlindungan Data",
+          content: "Kami menerapkan langkah-langkah keamanan yang kuat untuk melindungi informasi pribadi Anda dari akses yang tidak sah."
+        },
+        {
+          title: "Penyimpanan Data",
+          content: "Data Anda disimpan secara aman dalam bentuk terenkripsi di server kami."
+        }
+      ]
+    },
+    terms: {
+      title: "Ketentuan Layanan",
+      lastUpdated: "Terakhir Diperbarui",
+      sections: [
+        {
+          title: "Persetujuan Ketentuan",
+          content: "Dengan mengakses dan menggunakan CryptoTracker, Anda setuju untuk terikat dengan Ketentuan Layanan ini."
+        },
+        {
+          title: "Tanggung Jawab Pengguna",
+          content: "Pengguna bertanggung jawab untuk menjaga keamanan akun dan data mereka."
+        },
+        {
+          title: "Penggunaan Layanan",
+          content: "Layanan kami harus digunakan sesuai dengan hukum dan peraturan yang berlaku."
+        },
+        {
+          title: "Modifikasi Layanan",
+          content: "Kami berhak untuk memodifikasi atau menghentikan layanan kami kapan saja."
+        }
+      ]
+    },
+    cryptoList: {
+      title: "Daftar Cryptocurrency",
+      table: {
+        no: "No",
+        coin: "Koin",
+        price: "Harga",
+        change: "Perubahan 24j",
+        marketCap: "Kap. Pasar"
+      },
+      search: "Cari koin...",
+      filter: {
+        all: "Semua",
+        trending: "Trending",
+        gainers: "Tertinggi 24H",
+        losers: "Terendah 24H",
+        highest: "Harga Tertinggi",
+        lowest: "Harga Terendah"
+      },
+      refresh: "Muat ulang data",
+    },
+    chart: {
+      timeRanges: {
+        "1": "24J",
+        "7": "7H",
+        "30": "30H",
+        "90": "90H",
+        "365": "1T"
+      },
+      chartTypes: {
+        line: "Garis",
+        candle: "Lilin"  // Changed to Indonesian version
+      },
+      back: "Kembali",
+      price: "Harga",
+      volume: "Volume"
+    },
+    metrics: {
+      activeUsers: "Pengguna Aktif",
+      globalMarkets: "Pasar Global",
+      dailyTransactions: "Transaksi Harian",
+      teamMembers: "Anggota Tim",
+    },
+    portfolio: {
+      title: "Kalkulator Portfolio",
+      coinName: "Nama Koin",
+      amount: "Jumlah",
+      buyPrice: "Harga Beli",
+      addCoin: "Tambah Koin",
+      coin: "Koin",
+      actions: "Aksi",
+      remove: "Hapus",
+      noItems: "Tidak ada item di portofolio",
+    },
+    portfolioCalculator: {
+      title: "Kalkulator Portfolio",
+      totalPortfolioValue: "Total Nilai Portfolio",
+      searchPlaceholder: "Cari koin...",
+      holdings: "Kepemilikan",
+      allocation: "Alokasi Portfolio",
+      amount: "Jumlah",
+      value: "Nilai",
+      actions: "Aksi",
+      remove: "Hapus",
+      noCoins: "Belum ada koin ditambahkan. Gunakan pencarian untuk menambahkan koin.",
+      addCoin: "Tambah Koin"
+    }
+  },
   en: {
     menu: {
       home: "Home",
@@ -35,26 +236,36 @@ export const translations = {
       hero: {
         title: "The Future of Crypto Trading",
         description: "Experience real-time cryptocurrency tracking with advanced analytics and powerful portfolio management tools",
-        startTrading: "Start Trading Now",
+        startTrading: "Start Trading",
         viewMarkets: "View Markets"
       }
     },
     about: {
       title: "About Us",
-      description: "CryptoTracker is your trusted companion in the world of cryptocurrency trading and investment.",
-      mission: {
-        title: "Our Mission",
-        description: "To provide accurate, real-time cryptocurrency data and powerful portfolio management tools to traders and investors worldwide."
-      },
-      vision: {
-        title: "Our Vision",
-        description: "To become the leading platform for cryptocurrency tracking and portfolio management, making crypto trading accessible and efficient for everyone."
-      },
-      stats: {
+      description: "CryptoTracker is your trusted partner in cryptocurrency trading and investment.",
+      metrics: {
         activeUsers: "Active Users",
-        globalMarkets: "Global Markets",
+        globalMarket: "Global Market",
         dailyTransactions: "Daily Transactions",
-        teamMembers: "Team Members"
+        teamMembers: "Team Members",
+        values: {
+          activeUsers: "10,000+",
+          globalMarket: "150+",
+          dailyTransactions: "$50M+",
+          teamMembers: "20+"
+        }
+      }
+    },
+    metrics: {
+      activeUsers: "Active Users",
+      globalMarket: "Global Market",
+      dailyTransactions: "Daily Transactions",
+      teamMembers: "Team Members",
+      values: {
+        activeUsers: "10,000+",
+        globalMarket: "150+",
+        dailyTransactions: "$50M+",
+        teamMembers: "20+"
       }
     },
     contact: {
@@ -137,8 +348,11 @@ export const translations = {
         all: "All",
         trending: "Trending",
         gainers: "Top Gainers",
-        losers: "Top Losers"
-      }
+        losers: "Top Losers",
+        highest: "Highest Price",
+        lowest: "Lowest Price"
+      },
+      refresh: "Refresh data",
     },
     chart: {
       timeRanges: {
@@ -155,164 +369,36 @@ export const translations = {
       back: "Back",
       price: "Price",
       volume: "Volume"
-    }
-  },
-  id: {
-    menu: {
-      home: "Beranda",
-      cryptoList: "Daftar Cryptocurrency",
-      portfolio: "Kalkulator Portfolio",
-      search: "Cari...",
-      dark: "DR",
-      light: "LG"
     },
-    footer: {
-      about: {
-        title: "Tentang",
-        description: "Aplikasi pelacakan cryptocurrency real-time dengan notifikasi harga, manajemen portofolio, dan analisis pasar."
-      },
-      resources: {
-        title: "Sumber Daya",
-        home: "Beranda",
-        search: "Pencarian",
-        cryptoList: "Daftar Cryptocurrency",
-        portfolio: "Kalkulator Portfolio"
-      },
-      company: {
-        title: "Perusahaan",
-        about: "Tentang Kami",
-        contact: "Kontak",
-        privacy: "Kebijakan Privasi",
-        terms: "Ketentuan Layanan"
-      },
-      connect: "Hubungkan",
-      created: "Dibuat oleh",
-      rights: "Hak cipta dilindungi."
+    metrics: {
+      activeUsers: "Active Users",
+      globalMarkets: "Global Markets",
+      dailyTransactions: "Daily Transactions",
+      teamMembers: "Team Members",
     },
-    home: {
-      hero: {
-        title: "Masa Depan Trading Crypto",
-        description: "Rasakan pelacakan cryptocurrency real-time dengan analitik canggih dan alat manajemen portofolio yang powerful",
-        startTrading: "Mulai Trading",
-        viewMarkets: "Lihat Pasar"
-      }
+    portfolio: {
+      title: "Portfolio Calculator",
+      coinName: "Coin Name",
+      amount: "Amount",
+      buyPrice: "Buy Price",
+      addCoin: "Add Coin",
+      coin: "Coin",
+      actions: "Actions",
+      remove: "Remove",
+      noItems: "No items in portfolio",
     },
-    about: {
-      title: "Tentang Kami",
-      description: "CryptoTracker adalah rekan terpercaya Anda dalam dunia trading dan investasi cryptocurrency.",
-      mission: {
-        title: "Misi Kami",
-        description: "Menyediakan data cryptocurrency yang akurat dan real-time serta alat manajemen portofolio yang powerful untuk trader dan investor di seluruh dunia."
-      },
-      vision: {
-        title: "Visi Kami",
-        description: "Menjadi platform terdepan untuk pelacakan cryptocurrency dan manajemen portofolio, membuat trading crypto dapat diakses dan efisien untuk semua orang."
-      },
-      stats: {
-        activeUsers: "Pengguna Aktif",
-        globalMarkets: "Pasar Global",
-        dailyTransactions: "Transaksi Harian",
-        teamMembers: "Anggota Tim"
-      }
-    },
-    contact: {
-      title: "Hubungi Kami",
-      description: "Punya pertanyaan atau butuh bantuan? Kami siap membantu!",
-      form: {
-        name: "Nama Anda",
-        email: "Alamat Email",
-        subject: "Subjek",
-        message: "Pesan Anda",
-        submit: "Kirim Pesan",
-        sending: "Mengirim...",
-        success: "Terima kasih! Pesan Anda telah berhasil dikirim.",
-        error: "Maaf! Terjadi kesalahan. Silakan coba lagi."
-      },
-      info: {
-        address: "Alamat",
-        addressDetail: "Jalan Crypto 123, Kota Digital",
-        phone: "Telepon",
-        phoneNumber: "+1 234 567 890",
-        email: "Email",
-        emailAddress: "support@cryptotracker.com"
-      }
-    },
-    privacy: {
-      title: "Kebijakan Privasi",
-      lastUpdated: "Terakhir Diperbarui",
-      sections: [
-        {
-          title: "Pengumpulan Informasi",
-          content: "Kami mengumpulkan informasi untuk memberikan layanan yang lebih baik kepada pengguna dan meningkatkan keamanan platform kami."
-        },
-        {
-          title: "Penggunaan Data",
-          content: "Kami menggunakan data yang dikumpulkan untuk mengoperasikan dan meningkatkan layanan kami, mengembangkan fitur baru, dan melindungi pengguna kami."
-        },
-        {
-          title: "Perlindungan Data",
-          content: "Kami menerapkan langkah-langkah keamanan yang kuat untuk melindungi informasi pribadi Anda dari akses yang tidak sah."
-        },
-        {
-          title: "Penyimpanan Data",
-          content: "Data Anda disimpan secara aman dalam bentuk terenkripsi di server kami."
-        }
-      ]
-    },
-    terms: {
-      title: "Ketentuan Layanan",
-      lastUpdated: "Terakhir Diperbarui",
-      sections: [
-        {
-          title: "Persetujuan Ketentuan",
-          content: "Dengan mengakses dan menggunakan CryptoTracker, Anda setuju untuk terikat dengan Ketentuan Layanan ini."
-        },
-        {
-          title: "Tanggung Jawab Pengguna",
-          content: "Pengguna bertanggung jawab untuk menjaga keamanan akun dan data mereka."
-        },
-        {
-          title: "Penggunaan Layanan",
-          content: "Layanan kami harus digunakan sesuai dengan hukum dan peraturan yang berlaku."
-        },
-        {
-          title: "Modifikasi Layanan",
-          content: "Kami berhak untuk memodifikasi atau menghentikan layanan kami kapan saja."
-        }
-      ]
-    },
-    cryptoList: {
-      title: "Daftar Cryptocurrency",
-      table: {
-        no: "No",
-        coin: "Koin",
-        price: "Harga",
-        change: "Perubahan 24j",
-        marketCap: "Kap. Pasar"
-      },
-      search: "Cari koin...",
-      filter: {
-        all: "Semua",
-        trending: "Trending",
-        gainers: "Kenaikan Tertinggi",
-        losers: "Penurunan Tertinggi"
-      }
-    },
-    chart: {
-      timeRanges: {
-        "1": "24J",
-        "7": "7H",
-        "30": "30H",
-        "90": "90H",
-        "365": "1T"
-      },
-      chartTypes: {
-        line: "Garis",
-        candle: "Lilin"  // Changed to Indonesian version
-      },
-      back: "Kembali",
-      price: "Harga",
-      volume: "Volume"
+    portfolioCalculator: {
+      title: "Portfolio Calculator",
+      totalPortfolioValue: "Total Portfolio Value",
+      searchPlaceholder: "Search coins...",
+      holdings: "Holdings",
+      allocation: "Portfolio Allocation",
+      amount: "Amount",
+      value: "Value",
+      actions: "Actions",
+      remove: "Remove",
+      noCoins: "No coins added yet. Use the search to add coins.",
+      addCoin: "Add Coin"
     }
   }
 };

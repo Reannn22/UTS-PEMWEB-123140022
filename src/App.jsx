@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
 import { HomePage } from "./components";
 import { LanguageProvider } from "./context/LanguageContext";
@@ -11,7 +11,7 @@ import CryptocurrencyList from "./components/pages/CryptocurrencyList";
 import ChartPage from "./components/pages/ChartPage";
 import { BrowserRouter } from "react-router-dom";
 import { ScrollToTop } from "./components";
-import PriceChart from "./components/charts/PriceChart";
+import PortfolioCalculator from "./components/pages/PortfolioCalculator";
 
 function App() {
   useEffect(() => {
@@ -44,6 +44,10 @@ function App() {
               element={<CryptocurrencyList />}
             />
             <Route path="/coin/:coinId" element={<ChartPage />} />
+            <Route
+              path="/portfoliocalculator"
+              element={<PortfolioCalculator />}
+            />
           </Routes>
         </ThemeProvider>
       </LanguageProvider>

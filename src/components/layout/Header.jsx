@@ -8,11 +8,12 @@ import sunIcon from "../../assets/icons/sun.svg";
 import searchIcon from "../../assets/icons/search.svg";
 import languagesIcon from "../../assets/icons/languages.svg";
 import { translations } from "../../utils/translations";
+import { Link } from "react-router-dom"; // Add this import
 
 // Update Logo component with consistent transitions
 function Logo({ isDark }) {
   return (
-    <div className="flex items-center gap-3">
+    <Link to="/" className="flex items-center gap-3">
       <div className="flex-shrink-0 w-8 h-8">
         <img
           src={logoImage}
@@ -28,7 +29,7 @@ function Logo({ isDark }) {
           Tracker
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -119,7 +120,10 @@ const Header = () => {
         href: "/cryptocurrencylist",
         label: translations[lang].menu.cryptoList,
       },
-      { href: "#trending", label: translations[lang].menu.portfolio },
+      {
+        href: "/portfoliocalculator",
+        label: translations[lang].menu.portfolio,
+      },
     ],
     [lang]
   );
@@ -201,6 +205,9 @@ const Header = () => {
         currentPath.startsWith("/coin/")
       );
     }
+    if (href === "/portfoliocalculator") {
+      return currentPath === "/portfoliocalculator";
+    }
     return window.location.hash === href;
   };
 
@@ -278,32 +285,29 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
+        isMenuOpen &&
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target)
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest('button[aria-label="Toggle menu"]')
       ) {
         setIsMenuOpen(false);
       }
     };
 
-    if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
 
   // Update the hover and text color logic in the navigation section
   return (
     <header
       className={`
-        fixed w-full top-0 left-0 right-0 z-50
+        fixed w-full top-0 left-0 right-0 z-50 shadow-md shadow-cyan-500/20
         ${
           isScrolled
             ? isDark
-              ? "bg-gray-900/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
-              : "bg-white/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
+              ? "bg-gray-900/70 backdrop-blur-md backdrop-saturate-150"
+              : "bg-white/70 backdrop-blur-md backdrop-saturate-150"
             : isDark
             ? "bg-gray-900"
             : "bg-white"
@@ -313,12 +317,7 @@ const Header = () => {
       <div className="container mx-auto px-6">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
-          <button
-            className="flex-shrink-0"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <Logo isDark={isDark} />
-          </button>
+          <Logo isDark={isDark} />
 
           {/* Updated Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8 relative">
@@ -392,7 +391,7 @@ const Header = () => {
                       ? "text-gray-600"
                       : "text-gray-600"
                   }
-                  bg-transparent border-none outline-none
+                  bg-transparent outline-none
                   placeholder:text-gray-400
                 `}
               />
@@ -446,7 +445,7 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* Updated Mobile Menu */}
+      {/* Mobile Menu - Remove transitions */}
       {isMenuOpen && (
         <div className="lg:hidden">
           <div ref={mobileMenuRef} className="container mx-auto p-4">
@@ -459,7 +458,7 @@ const Header = () => {
                 placeholder={translations[lang].menu.search}
                 className={`
                   w-full pl-10 pr-4 py-2.5 text-sm rounded-lg
-                  border-none outline-none
+                  outline-none
                   placeholder:text-gray-400
                   ${
                     isDark

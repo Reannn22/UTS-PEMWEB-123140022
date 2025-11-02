@@ -1,35 +1,28 @@
 import { API_BASE_URL, API_ENDPOINTS, DEFAULT_CURRENCY, API_KEY } from './constants';
+import { saveToStorage, getFromStorage } from './storage';
 
 const headers = API_KEY ? { 'X-CG-Api-Key': API_KEY } : {};
 
-export const getCoinsMarkets = async ({ 
-  vs_currency = DEFAULT_CURRENCY,
-  order = 'market_cap_desc',
-  per_page = 50,
-  page = 1,
-  ...otherParams 
-} = {}) => {
-  try {
-    const params = new URLSearchParams({
-      vs_currency,
-      order,
-      per_page,
-      page,
-      ...otherParams
-    });
+export const getCoinsMarkets = async (params = {}) => {
+  const cacheKey = `markets_${JSON.stringify(params)}`;
+  const cachedData = getFromStorage(cacheKey);
 
+  if (cachedData) {
+    return cachedData;
+  }
+
+  try {
     const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${params}`,
+      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams(params)}`,
       { headers }
     );
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch coins data');
-    }
-
-    return await response.json();
+    if (!response.ok) throw new Error('Failed to fetch coins data');
+    const data = await response.json();
+    saveToStorage(cacheKey, data);
+    return data;
   } catch (error) {
-    throw new Error(`Error fetching coins: ${error.message}`);
+    throw error;
   }
 };
 
@@ -53,53 +46,49 @@ export const getCoinDetail = async (coinId) => {
 };
 
 export const getCoinMarketChart = async (coinId, days = 7) => {
+  const cacheKey = `chart_${coinId}_${days}`;
+  const cachedData = getFromStorage(cacheKey);
+
+  if (cachedData) {
+    return cachedData;
+  }
+
   try {
-    if (!coinId) throw new Error('Coin ID is required');
-
-    const params = new URLSearchParams({
-      vs_currency: DEFAULT_CURRENCY,
-      days: days.toString()
-    });
-
+    const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/market_chart?${params}`,
+      `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/market_chart?${new URLSearchParams(params)}`,
       { headers }
     );
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch market chart data');
-    }
-
-    return await response.json();
+    if (!response.ok) throw new Error('Failed to fetch market chart data');
+    const data = await response.json();
+    saveToStorage(cacheKey, data);
+    return data;
   } catch (error) {
-    throw new Error(`Error fetching market chart: ${error.message}`);
+    throw error;
   }
 };
 
 export const getCoinOhlc = async (coinId, days) => {
+  const cacheKey = `ohlc_${coinId}_${days}`;
+  const cachedData = getFromStorage(cacheKey);
+
+  if (cachedData) {
+    return cachedData;
+  }
+
   try {
-    if (!coinId) throw new Error("Coin ID is required");
-
-    // Gunakan 'DEFAULT_CURRENCY' agar konsisten dengan fungsi lain
-    const params = new URLSearchParams({
-      vs_currency: DEFAULT_CURRENCY,
-      days: days.toString(),
-    });
-
-    // Endpoint ini mengambil data Open, High, Low, Close (OHLC)
-    // Menggunakan pola fetch() yang sama dengan fungsi lain
+    const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/ohlc?${params}`,
+      `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/ohlc?${new URLSearchParams(params)}`,
       { headers }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch coin OHLC data");
-    }
-
-    return await response.json(); // Menggunakan .json() sama seperti fetch() lainnya
+    if (!response.ok) throw new Error('Failed to fetch OHLC data');
+    const data = await response.json();
+    saveToStorage(cacheKey, data);
+    return data;
   } catch (error) {
-    console.error("Error fetching coin OHLC data:", error);
     throw error;
   }
 };

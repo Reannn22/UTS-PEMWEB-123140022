@@ -2,42 +2,27 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import chevronUp from "../../assets/icons/chevron-up.svg";
 
-const ScrollToTop = () => {
+export default function ScrollToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isNearFooter, setIsNearFooter] = useState(false);
   const { isDark } = useTheme();
-  const [bottomPosition, setBottomPosition] = useState("2rem");
 
   useEffect(() => {
-    const checkFooter = () => {
+    const handleScroll = () => {
+      // Show button when page is scrolled 100px
+      setIsVisible(window.scrollY > 100);
+
+      // Check if we're near footer
       const footer = document.querySelector("footer");
       if (footer) {
         const footerTop = footer.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
-        const scrollButton = document.querySelector("#scroll-to-top");
-
-        if (scrollButton) {
-          const buttonHeight = scrollButton.offsetHeight;
-          const buttonBottom = 32; // 2rem in pixels
-
-          if (footerTop < windowHeight) {
-            const newBottom = windowHeight - footerTop + buttonBottom;
-            setBottomPosition(`${newBottom}px`);
-          } else {
-            setBottomPosition("2rem");
-          }
-        }
+        setIsNearFooter(footerTop - windowHeight < 100);
       }
     };
 
-    window.addEventListener("scroll", checkFooter);
-    window.addEventListener("resize", checkFooter);
-
-    // Initial check
-    checkFooter();
-
-    return () => {
-      window.removeEventListener("scroll", checkFooter);
-      window.removeEventListener("resize", checkFooter);
-    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
@@ -49,23 +34,25 @@ const ScrollToTop = () => {
 
   return (
     <button
-      id="scroll-to-top"
       onClick={scrollToTop}
-      style={{ bottom: bottomPosition }}
-      className={`fixed right-8 p-3 rounded-full shadow-lg z-50 ${
-        isDark
-          ? "bg-gray-800 hover:bg-gray-700 text-gray-300"
-          : "bg-white hover:bg-gray-100 text-gray-600"
-      }`}
+      className={`
+        fixed right-6 p-2 rounded-full shadow-lg transition-all duration-300 z-50
+        ${
+          isDark
+            ? "bg-gray-800/80 hover:bg-gray-700/80"
+            : "bg-white/80 hover:bg-gray-50/80"
+        }
+        ${
+          !isVisible
+            ? "opacity-0 pointer-events-none translate-y-4"
+            : "opacity-100"
+        }
+        ${isNearFooter ? "bottom-24" : "bottom-6"}
+        backdrop-blur-sm
+      `}
       aria-label="Scroll to top"
     >
-      <img
-        src={chevronUp}
-        alt="Scroll to top"
-        className={`w-6 h-6 ${isDark ? "filter invert" : ""}`}
-      />
+      <img src={chevronUp} alt="Scroll to top" className="w-6 h-6" />
     </button>
   );
-};
-
-export default ScrollToTop;
+}

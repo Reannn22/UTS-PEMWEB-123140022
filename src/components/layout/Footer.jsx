@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { useTheme } from "../../context/ThemeContext";
 import logoImage from "../../assets/images/logo/CryptoTracker.png";
 import { useLanguage } from "../../context/LanguageContext";
-import { translations } from "../../utils/translations"; // Adjust the path as necessary
-import { Link, useLocation } from "react-router-dom";
+import { translations } from "../../utils/translations";
+import { useLocation } from "react-router-dom";
 import AppLink from "../common/AppLink";
 
 // Logo component matching header style
@@ -60,7 +60,7 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
   const resourceLinks = [
     { to: "/", text: t.resources.home },
     { to: "/cryptocurrencylist", text: t.resources.cryptoList },
-    { to: "/portfolio", text: t.resources.portfolio },
+    { to: "/portfoliocalculator", text: t.resources.portfolio },
   ];
 
   const companyLinks = [
@@ -179,7 +179,7 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                   </svg>
                 }
                 label="GitHub"
@@ -200,43 +200,50 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
                 label="LinkedIn"
               />
             </div>
-            <p
-              className={`text-sm ${
-                isDark ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {t.created} {authorName}{" "}
-              <span className="opacity-75">({nim})</span>
-            </p>
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Divider Line */}
         <div
-          className={`mt-12 pt-8 border-t ${
-            isDark ? "border-gray-800" : "border-gray-200"
-          } text-center`}
-        >
-          <p
-            className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}
-          >
-            &copy; {new Date().getFullYear()} CryptoTracker. {t.rights}
-          </p>
+          className={`my-8 h-px ${isDark ? "bg-gray-700" : "bg-gray-200"}`}
+        />
+
+        {/* Copyright Section */}
+        <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+          <div className="text-sm text-gray-500">
+            {t.copyright}{" "}
+            <a
+              href="https://github.com/Reannn22"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-gray-700 hover:text-gray-900"
+            >
+              {authorName}
+            </a>
+            , {nim}
+          </div>
+          <div className="flex gap-4 mt-4 md:mt-0">
+            <a
+              href="#"
+              className={`text-sm ${
+                isDark ? "text-gray-400 hover:text-white" : "text-gray-600"
+              }`}
+            >
+              {t.privacy}
+            </a>
+            <a
+              href="#"
+              className={`text-sm ${
+                isDark ? "text-gray-400 hover:text-white" : "text-gray-600"
+              }`}
+            >
+              {t.terms}
+            </a>
+          </div>
         </div>
       </div>
     </footer>
   );
-};
-
-// PropTypes
-Logo.propTypes = {
-  isDark: PropTypes.bool.isRequired,
-};
-
-SocialIcon.propTypes = {
-  href: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-  label: PropTypes.string.isRequired,
 };
 
 Footer.propTypes = {

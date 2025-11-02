@@ -9,6 +9,7 @@ import {
 } from "../../utils/helpers";
 import chevronLeft from "../../assets/icons/chevron-left.svg";
 import chevronRight from "../../assets/icons/chevron-right.svg";
+import refreshIcon from "../../assets/icons/refresh-cw.svg";
 import { translations } from "../../utils/translations";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +27,7 @@ export default function CryptocurrencyList() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all"); // Change default to all
   const [filteredCoins, setFilteredCoins] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -63,7 +65,7 @@ export default function CryptocurrencyList() {
   // Remove the language change effect since we don't need to refetch
   useEffect(() => {
     fetchCoins(currentPage, false);
-  }, []); // Only fetch on mount
+  }, [currentPage]); // Add currentPage to dependencies
 
   // Add currency conversion helper
   const convertPrice = (priceUSD) => {
@@ -86,7 +88,6 @@ export default function CryptocurrencyList() {
     // Apply category filter
     switch (filter) {
       case "all":
-        // Sort alphabetically by name
         result = result.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "trending":
@@ -105,6 +106,12 @@ export default function CryptocurrencyList() {
           (a, b) =>
             a.price_change_percentage_24h - b.price_change_percentage_24h
         );
+        break;
+      case "highest":
+        result = result.sort((a, b) => b.current_price - a.current_price);
+        break;
+      case "lowest":
+        result = result.sort((a, b) => a.current_price - b.current_price);
         break;
       default:
         break;
@@ -195,6 +202,12 @@ export default function CryptocurrencyList() {
     navigate(`/coin/${coinId}`);
   };
 
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchCoins(currentPage);
+    setIsRefreshing(false);
+  };
+
   useEffect(() => {
     const handleHeaderSearch = (e) => {
       const value = e.detail.value;
@@ -224,35 +237,76 @@ export default function CryptocurrencyList() {
       <main className="flex-1 container mx-auto px-4 py-8 mt-16">
         <div className="max-w-7xl mx-auto">
           {/* Search and filter controls */}
-          <div className="mb-6 flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              {/* Search input */}
+          <div className="mb-6 flex flex-col gap-4">
+            {/* Search and refresh row */}
+            <div className="flex gap-2">
               <input
                 type="text"
                 placeholder={t.search}
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                className={`w-full px-4 py-2 rounded-lg border ${
+                className={`flex-1 px-4 py-2 rounded-lg border ${
                   isDark
-                    ? "bg-gray-800 text-white border-gray-700 focus:border-white"
-                    : "bg-white text-gray-900 border-gray-300 focus:border-gray-900"
-                } focus:outline-none focus:ring-2 focus:ring-cyan-500`}
+                    ? "bg-gray-800 text-white border-gray-700 hover:bg-gray-700"
+                    : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                } focus:outline-none`}
               />
+              {/* Refresh Button */}
+              <button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className={`h-[40px] w-[40px] rounded-lg border flex items-center justify-center ${
+                  isDark
+                    ? "bg-gray-800 border-gray-700"
+                    : "bg-white border-gray-300"
+                }`}
+                title={t.refresh}
+              >
+                <img
+                  src={refreshIcon}
+                  alt="Refresh"
+                  className={`w-6 h-6 ${isDark ? "invert" : ""} ${
+                    isRefreshing ? "animate-spin" : ""
+                  }`}
+                />
+              </button>
             </div>
-            {/* Modified filter buttons with border */}
-            <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
+
+            {/* Filter buttons row - desktop */}
+            <div className="hidden sm:grid grid-cols-6 gap-2">
               {Object.entries(t.filter).map(([key, label]) => (
                 <button
                   key={key}
                   onClick={() => handleFilter(key)}
-                  className={`w-full sm:w-auto px-4 py-2 rounded-lg border ${
+                  className={`px-4 py-2 rounded-lg border ${
                     filter === key
                       ? isDark
                         ? "bg-cyan-600 text-white border-transparent"
                         : "bg-cyan-500 text-white border-transparent"
                       : isDark
-                      ? "bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700 hover:border-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-300 hover:border-gray-900"
+                      ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:border-gray-600"
+                      : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Filter buttons - mobile */}
+            <div className="grid sm:hidden grid-cols-2 gap-2">
+              {Object.entries(t.filter).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => handleFilter(key)}
+                  className={`px-4 py-2 rounded-lg border ${
+                    filter === key
+                      ? isDark
+                        ? "bg-cyan-600 text-white border-transparent"
+                        : "bg-cyan-500 text-white border-transparent"
+                      : isDark
+                      ? "bg-gray-800 text-gray-300 border-gray-700"
+                      : "bg-gray-100 text-gray-700 border-gray-300"
                   }`}
                 >
                   {label}
@@ -300,9 +354,7 @@ export default function CryptocurrencyList() {
                         onClick={() => handleCoinClick(coin.id)}
                         className={`border-t ${
                           isDark ? "border-gray-700" : "border-gray-300"
-                        } cursor-pointer hover:${
-                          isDark ? "bg-gray-800" : "bg-gray-50"
-                        } transition-colors`}
+                        } cursor-pointer`}
                       >
                         <td
                           className={`p-4 ${

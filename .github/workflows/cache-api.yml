@@ -1,0 +1,32 @@
+name: Cache API Responses
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # Run every 6 hours
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  cache-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Cache API Response
+        run: |
+          mkdir -p cache
+          node .github/scripts/fetch-api.js
+        env:
+          REACT_APP_COINGECKO_API_KEY: ${{ secrets.REACT_APP_COINGECKO_API_KEY }}
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add cache/
+          git commit -m "Update API cache $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+          git push

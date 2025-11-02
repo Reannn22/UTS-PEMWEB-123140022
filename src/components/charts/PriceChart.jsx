@@ -1,14 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
-// --- BARU: Impor 'getCoinOhlc' (Anda harus membuatnya di api.js) ---
 import { getCoinMarketChart, getCoinOhlc } from "../../utils/api";
 import { formatCurrency } from "../../utils/helpers";
-import { translations } from "../../utils/translations";
+import { Chart } from "react-chartjs-2"; // Add this import
 
-// --- BARU: Impor <Chart> generik, bukan <Line> ---
-import { Chart } from "react-chartjs-2";
+// Move these imports to the top
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,20 +16,18 @@ import {
   Title,
   Tooltip,
   Legend,
-  TimeScale, // <-- BARU: Untuk skala waktu
-  TimeSeriesScale, // <-- BARU: Untuk skala waktu
+  TimeScale,
+  TimeSeriesScale,
 } from "chart.js";
+import {
+  CandlestickController,
+  CandlestickElement,
+} from "chartjs-chart-financial"; // Changed from OhlcElement
 
 // --- BARU: Impor adapter tanggal ---
 import "chartjs-adapter-date-fns";
 
-// --- BARU: Impor controller Candlestick ---
-import {
-  CandlestickController,
-  OhlcElement,
-} from "chartjs-chart-financial";
-
-// --- BARU: Daftarkan komponen baru ---
+// Register components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -43,7 +39,7 @@ ChartJS.register(
   TimeScale,
   TimeSeriesScale,
   CandlestickController,
-  OhlcElement
+  CandlestickElement // Changed from OhlcElement
 );
 
 const PriceChart = ({
@@ -56,7 +52,6 @@ const PriceChart = ({
   const { isDark } = useTheme();
   const [chartData, setChartData] = useState({ datasets: [] }); // State awal kosong
   const [error, setError] = useState(null);
-  const chartRef = useRef(null);
 
   // --- BARU: useEffect di-trigger oleh chartType ---
   useEffect(() => {
@@ -89,7 +84,7 @@ const PriceChart = ({
             ],
           });
 
-        // --- Logika untuk Tipe Chart Lilin (Candle) ---
+          // --- Logika untuk Tipe Chart Lilin (Candle) ---
         } else if (chartType === "candle") {
           // Anda HARUS membuat fungsi 'getCoinOhlc' di 'utils/api.js'
           // Endpoint-nya: /api/v3/coins/{id}/ohlc?vs_currency=usd&days={timeRange}
@@ -98,15 +93,13 @@ const PriceChart = ({
             throw new Error("Invalid OHLC data received");
           }
 
-          formattedData = data.map(
-            ([timestamp, open, high, low, close]) => ({
-              x: timestamp,
-              o: lang === "id" ? open * 15500 : open,
-              h: lang === "id" ? high * 15500 : high,
-              l: lang === "id" ? low * 15500 : low,
-              c: lang === "id" ? close * 15500 : close,
-            })
-          );
+          formattedData = data.map(([timestamp, open, high, low, close]) => ({
+            x: timestamp,
+            o: lang === "id" ? open * 15500 : open,
+            h: lang === "id" ? high * 15500 : high,
+            l: lang === "id" ? low * 15500 : low,
+            c: lang === "id" ? close * 15500 : close,
+          }));
 
           setChartData({
             datasets: [
@@ -134,6 +127,23 @@ const PriceChart = ({
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 750,
+      easing: "easeInOutQuart",
+      mode: "active",
+      delay: (context) => {
+        // Add progressive delay for each data point
+        return context.dataIndex * 5;
+      },
+    },
+    transitions: {
+      active: {
+        animation: {
+          duration: 400,
+          easing: "easeOutCubic",
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -207,6 +217,13 @@ const PriceChart = ({
           maxRotation: 0,
           source: "auto", // Biarkan chart.js memilih tick terbaik
         },
+        // Add smooth axis transitions
+        transitions: {
+          scale: {
+            duration: 500,
+            easing: "easeInOutSine",
+          },
+        },
       },
       y: {
         position: "left",
@@ -219,27 +236,56 @@ const PriceChart = ({
           callback: (value) =>
             formatCurrency(value, lang === "id" ? "IDR" : "USD"),
         },
+        // Add smooth axis transitions
+        transitions: {
+          scale: {
+            duration: 500,
+            easing: "easeInOutSine",
+          },
+        },
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.4, // Makes the line smoother
+      },
+      point: {
+        radius: 0, // Hide points by default
+        hitRadius: 8, // Area for hover detection
+        hoverRadius: 4, // Show points on hover
+        hoverBorderWidth: 2,
+        transitions: {
+          active: {
+            animation: {
+              duration: 300,
+            },
+          },
+        },
       },
     },
     interaction: {
-      mode: "nearest",
       intersect: false,
+      mode: "index",
+    },
+    hover: {
+      animationDuration: 300,
+      mode: "nearest",
     },
     // --- BARU: Hapus 'type: "line"' yang hardcoded ---
   };
 
   return (
-    // Saya kembalikan ke 400px, 550px terlihat terlalu besar di skeleton
     <div className="h-[550px] w-full">
       {error ? (
         <div className="text-red-500 text-center">{error}</div>
       ) : (
-        // --- BARU: Gunakan <Chart /> generik ---
         <Chart
-          ref={chartRef}
           type={chartType === "candle" ? "candlestick" : "line"}
           data={chartData}
-          options={options}
+          options={{
+            ...options,
+            transitions: false, // Disable all transitions
+          }}
         />
       )}
     </div>
