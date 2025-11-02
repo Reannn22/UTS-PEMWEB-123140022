@@ -13,6 +13,10 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 - Real-time cryptocurrency statistics
 - Smooth animations and transitions
 
+Desktop | Mobile
+:-------------------------:|:-------------------------:
+![Homepage Desktop](./src/assets/images/screenshots/homepage-desktop.png) | ![Homepage Mobile](./src/assets/images/screenshots/homepage-mobile.png)
+
 ### 📊 Cryptocurrency List
 
 - Real-time price updates
@@ -24,7 +28,9 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 - Responsive table/card views
 - Pagination support
 
-![Crypto List](./src/assets/images/screenshots/cryptolist.png)
+Desktop | Mobile
+:-------------------------:|:-------------------------:
+![Crypto List Desktop](./src/assets/images/screenshots/cryptolist-desktop.png) | ![Crypto List Mobile](./src/assets/images/screenshots/cryptolist-mobile.png)
 
 ### 📈 Chart Analysis
 
@@ -36,7 +42,15 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 - Price and volume indicators
 - Responsive design
 
-![Chart Page](./src/assets/images/screenshots/chartpage.png)
+Features:
+- Line and Candlestick charts
+- Multiple timeframes
+- Price indicators
+- Volume analysis
+
+Desktop | Mobile
+:-------------------------:|:-------------------------:
+![Chart Desktop](./src/assets/images/screenshots/chart-desktop.png) | ![Chart Mobile](./src/assets/images/screenshots/chart-mobile.png)
 
 ### 💼 Portfolio Calculator
 
@@ -46,7 +60,17 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 - Search and add any cryptocurrency
 - Persistent storage
 
-![Portfolio](./src/assets/images/screenshots/portfolio.png)
+Desktop | Mobile
+:-------------------------:|:-------------------------:
+![Portfolio Desktop](./src/assets/images/screenshots/portfolio-desktop.png) | ![Portfolio Mobile](./src/assets/images/screenshots/portfolio-mobile.png)
+
+### 📱 Mobile Features
+
+- Responsive navigation
+- Touch-friendly interface
+- Mobile-optimized charts
+- Swipe gestures
+- Bottom navigation
 
 ### 🌐 Internationalization
 
@@ -59,6 +83,15 @@ A comprehensive cryptocurrency tracking application built with React, featuring 
 - Light/Dark mode
 - Persistent theme preference
 - Smooth transitions
+
+### 📧 Contact Form
+
+- Desktop
+- Mobile
+
+Desktop | Mobile
+:-------------------------:|:-------------------------:
+![Contact Desktop](./src/assets/images/screenshots/contact-desktop.png) | ![Contact Mobile](./src/assets/images/screenshots/contact-mobile.png)
 
 ## 🚀 Tech Stack
 
