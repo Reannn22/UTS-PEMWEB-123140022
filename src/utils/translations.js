@@ -214,6 +214,13 @@ export const translations = {
       remove: "Hapus",
       noCoins: "Belum ada koin ditambahkan. Gunakan pencarian untuk menambahkan koin.",
       addCoin: "Tambah Koin"
+    },
+    notFound: {
+      title: '404 - Halaman Tidak Ditemukan',
+      message: 'Halaman yang Anda cari tidak ditemukan.',
+      redirecting: 'Mengarahkan ke beranda dalam',
+      seconds: 'detik',
+      goHome: 'Kembali ke Beranda'
     }
   },
   en: {
@@ -431,6 +438,13 @@ export const translations = {
       remove: "Remove",
       noCoins: "No coins added yet. Use the search to add coins.",
       addCoin: "Add Coin"
+    },
+    notFound: {
+      title: '404 - Page Not Found',
+      message: 'The page you are looking for does not exist.',
+      redirecting: 'Redirecting to home in',
+      seconds: 'seconds',
+      goHome: 'Go to Home'
     }
   }
 };

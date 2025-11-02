@@ -12,6 +12,7 @@ import ChartPage from "./components/pages/ChartPage";
 import { BrowserRouter } from "react-router-dom";
 import { ScrollToTop } from "./components";
 import PortfolioCalculator from "./components/pages/PortfolioCalculator";
+import NotFound from "./components/pages/NotFound";
 
 function App() {
   useEffect(() => {
@@ -48,6 +49,7 @@ function App() {
               path="/portfoliocalculator"
               element={<PortfolioCalculator />}
             />
+            <Route path="*" element={<NotFound />} /> {/* Add this line */}
           </Routes>
         </ThemeProvider>
       </LanguageProvider>

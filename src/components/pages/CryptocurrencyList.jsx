@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useLanguage } from "../../context/LanguageContext";
 import { Header, Footer, Loading, ScrollToTop } from "../../components";
+import SearchForm from "../common/SearchForm";
 import {
   formatCurrency,
   formatNumber,
@@ -9,7 +10,6 @@ import {
 } from "../../utils/helpers";
 import chevronLeft from "../../assets/icons/chevron-left.svg";
 import chevronRight from "../../assets/icons/chevron-right.svg";
-import refreshIcon from "../../assets/icons/refresh-cw.svg";
 import { translations } from "../../utils/translations";
 import { useNavigate } from "react-router-dom";
 
@@ -151,7 +151,7 @@ export default function CryptocurrencyList() {
     return pages;
   };
 
-  // Add function to update URL params
+  // Update URL params helper
   const updateURLParams = (params) => {
     const url = new URL(window.location);
     Object.entries(params).forEach(([key, value]) => {
@@ -164,17 +164,10 @@ export default function CryptocurrencyList() {
     window.history.pushState({}, "", url);
   };
 
-  // Update search handler
+  // Search handler
   const handleSearch = (value) => {
     setSearch(value);
-
-    const url = new URL(window.location);
-    if (value) {
-      url.searchParams.set("search", value);
-    } else {
-      url.searchParams.delete("search");
-    }
-    window.history.pushState({}, "", url);
+    updateURLParams({ search: value });
 
     // Sync with header
     window.dispatchEvent(
@@ -182,7 +175,7 @@ export default function CryptocurrencyList() {
     );
   };
 
-  // Update filter handler
+  // Filter handler
   const handleFilter = (value) => {
     setFilter(value);
     updateURLParams({ filter: value === "all" ? "" : value });
@@ -236,84 +229,14 @@ export default function CryptocurrencyList() {
       <ScrollToTop />
       <main className="flex-1 container mx-auto px-4 py-8 mt-16">
         <div className="max-w-7xl mx-auto">
-          {/* Search and filter controls */}
-          <div className="mb-6 flex flex-col gap-4">
-            {/* Search and refresh row */}
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder={t.search}
-                value={search}
-                onChange={(e) => handleSearch(e.target.value)}
-                className={`flex-1 px-4 py-2 rounded-lg border ${
-                  isDark
-                    ? "bg-gray-800 text-white border-gray-700 hover:bg-gray-700"
-                    : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                } focus:outline-none`}
-              />
-              {/* Refresh Button */}
-              <button
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                className={`h-[40px] w-[40px] rounded-lg border flex items-center justify-center ${
-                  isDark
-                    ? "bg-gray-800 border-gray-700"
-                    : "bg-white border-gray-300"
-                }`}
-                title={t.refresh}
-              >
-                <img
-                  src={refreshIcon}
-                  alt="Refresh"
-                  className={`w-6 h-6 ${isDark ? "invert" : ""} ${
-                    isRefreshing ? "animate-spin" : ""
-                  }`}
-                />
-              </button>
-            </div>
-
-            {/* Filter buttons row - desktop */}
-            <div className="hidden sm:grid grid-cols-6 gap-2">
-              {Object.entries(t.filter).map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => handleFilter(key)}
-                  className={`px-4 py-2 rounded-lg border ${
-                    filter === key
-                      ? isDark
-                        ? "bg-cyan-600 text-white border-transparent"
-                        : "bg-cyan-500 text-white border-transparent"
-                      : isDark
-                      ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:border-gray-600"
-                      : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {/* Filter buttons - mobile */}
-            <div className="grid sm:hidden grid-cols-2 gap-2">
-              {Object.entries(t.filter).map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => handleFilter(key)}
-                  className={`px-4 py-2 rounded-lg border ${
-                    filter === key
-                      ? isDark
-                        ? "bg-cyan-600 text-white border-transparent"
-                        : "bg-cyan-500 text-white border-transparent"
-                      : isDark
-                      ? "bg-gray-800 text-gray-300 border-gray-700"
-                      : "bg-gray-100 text-gray-700 border-gray-300"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
+          <SearchForm
+            isDark={isDark}
+            translations={t}
+            onSearch={handleSearch}
+            onFilter={handleFilter}
+            onRefresh={handleRefresh}
+            isRefreshing={isRefreshing}
+          />
 
           {loading ? (
             <Loading type="skeleton" />

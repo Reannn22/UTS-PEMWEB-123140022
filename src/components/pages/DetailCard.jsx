@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { getCoinDetail } from '../../utils/api';
-import { formatCurrency, formatNumber } from '../../utils/helpers';
-import Loading from '../common/Loading';
-import ErrorMessage from '../common/ErrorMessage';
-import PriceChart from '../charts/PriceChart';
+import { useState, useEffect } from "react";
+import { getCoinDetail } from "../../utils/api";
+import { formatCurrency, formatNumber } from "../../utils/helpers";
+import Loading from "../common/Loading";
+import PriceChart from "../charts/PriceChart";
 
 const DetailCard = ({ coinId, onBack }) => {
   const [coin, setCoin] = useState(null);
@@ -27,13 +26,26 @@ const DetailCard = ({ coinId, onBack }) => {
   }, [coinId]);
 
   if (loading) return <Loading />;
-  if (error) return <ErrorMessage message={error} onRetry={() => window.location.reload()} />;
+  if (error)
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Retry
+        </button>
+      </div>
+    );
   if (!coin) return null;
 
   return (
     <div className="container">
-      <button onClick={onBack} className="mb-4">&larr; Back to List</button>
-      
+      <button onClick={onBack} className="mb-4">
+        &larr; Back to List
+      </button>
+
       <div className="grid-container">
         <div className="card">
           <div className="flex-container mb-4">
@@ -47,19 +59,27 @@ const DetailCard = ({ coinId, onBack }) => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-gray-600">Current Price</p>
-              <p className="text-xl font-bold">{formatCurrency(coin.market_data.current_price.usd)}</p>
+              <p className="text-xl font-bold">
+                {formatCurrency(coin.market_data.current_price.usd)}
+              </p>
             </div>
             <div>
               <p className="text-gray-600">Market Cap</p>
-              <p className="text-xl font-bold">{formatNumber(coin.market_data.market_cap.usd)}</p>
+              <p className="text-xl font-bold">
+                {formatNumber(coin.market_data.market_cap.usd)}
+              </p>
             </div>
             <div>
               <p className="text-gray-600">24h High</p>
-              <p className="text-green-600">{formatCurrency(coin.market_data.high_24h.usd)}</p>
+              <p className="text-green-600">
+                {formatCurrency(coin.market_data.high_24h.usd)}
+              </p>
             </div>
             <div>
               <p className="text-gray-600">24h Low</p>
-              <p className="text-red-600">{formatCurrency(coin.market_data.low_24h.usd)}</p>
+              <p className="text-red-600">
+                {formatCurrency(coin.market_data.low_24h.usd)}
+              </p>
             </div>
           </div>
         </div>

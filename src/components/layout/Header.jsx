@@ -196,11 +196,11 @@ const Header = () => {
   // Update isMenuActive function
   const isMenuActive = (href) => {
     const currentPath = window.location.pathname;
-    const isCoinRoute = currentPath.startsWith('/coin/');
+    const isCoinRoute = currentPath.startsWith("/coin/");
 
     // For cryptocurrency list or coin detail pages
-    if (href === '/cryptocurrencylist') {
-      return currentPath === '/cryptocurrencylist' || isCoinRoute;
+    if (href === "/cryptocurrencylist") {
+      return currentPath === "/cryptocurrencylist" || isCoinRoute;
     }
 
     // For other routes, exact match only
