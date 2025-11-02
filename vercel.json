@@ -2,26 +2,31 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "public": true,
   "routes": [
     {
-      "src": "/manifest.json",
-      "dest": "/manifest.json",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
     },
     {
       "src": "/data/(.*)",
-      "dest": "/data/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate",
-        "Content-Type": "application/json"
-      }
+      "dest": "/data/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  }
 }
