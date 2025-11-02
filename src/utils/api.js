@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS, DEFAULT_CURRENCY, API_KEY } from './constants';
 
-const headers = API_KEY ? { 'X-CG-Api-Key': API_KEY } : {};
+const headers = { 'X-CG-Api-Key': API_KEY };
 
 // Add cache helper functions
 const saveToCache = (key, data) => {
@@ -54,31 +54,18 @@ const fetchLocalJson = async (filename) => {
 
 export const getCoinsMarkets = async (params = {}) => {
   try {
-    // Selalu coba data lokal dulu
-    const localData = await fetchLocalJson('cryptocurrencylist.json');
-    if (localData) {
-      console.log('Using local cryptocurrency data');
-      return localData;
-    }
-    
-    // Fallback ke API jika lokal gagal
-    console.log('Falling back to API for cryptocurrency data');
     const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams(params)}`,
+      `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams({
+        vs_currency: DEFAULT_CURRENCY,
+        order: 'market_cap_desc',
+        per_page: 100,
+        page: 1,
+        sparkline: false,
+        ...params
+      })}`,
       { headers }
     );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch coins data (Status: ${response.status})`);
-    }
-
-    // --- TAMBAHKAN PENGECEKAN INI ---
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('API fallback did not return JSON. Check API_BASE_URL.');
-    }
-    // --- AKHIR PENGECEKAN ---
-
+    if (!response.ok) throw new Error('Failed to fetch coins data');
     return await response.json();
   } catch (error) {
     throw error;
@@ -106,14 +93,6 @@ export const getCoinDetail = async (coinId) => {
 
 export const getCoinMarketChart = async (coinId, days = 7) => {
   try {
-    // Always try local chart data first
-    const localData = await fetchLocalJson('chartpage.json');
-    if (localData) {
-      console.log('Using local chart data');
-      return localData;
-    }
-    // Fallback to API only if local fails
-    console.log('Falling back to API for chart data');
     const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/market_chart?${new URLSearchParams(params)}`,

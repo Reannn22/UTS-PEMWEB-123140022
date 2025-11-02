@@ -1,19 +1,6 @@
 {
-  "version": 2,
+  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  }
+  "framework": "create-react-app"
 }
