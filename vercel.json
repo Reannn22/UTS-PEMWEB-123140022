@@ -5,6 +5,13 @@
   "public": true,
   "routes": [
     {
+      "src": "/manifest.json",
+      "dest": "/manifest.json",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
       "src": "/data/(.*)",
       "dest": "/data/$1",
       "headers": {
