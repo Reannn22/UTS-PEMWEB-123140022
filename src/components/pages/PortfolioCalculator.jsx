@@ -48,16 +48,13 @@ export default function PortfolioCalculator() {
       coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Add coin to portfolio
+  // Add coin to portfolio with currency conversion
   const handleAddCoin = async () => {
     if (!selectedCoin || !amount) return;
 
     try {
       const coinData = await getCoinDetail(selectedCoin.id);
-      const currentPrice =
-        lang === "id"
-          ? coinData.market_data.current_price.idr
-          : coinData.market_data.current_price.usd;
+      const currentPrice = coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
       const value = currentPrice * parseFloat(amount);
 
       setPortfolio((prev) => [
@@ -69,6 +66,7 @@ export default function PortfolioCalculator() {
           amount: parseFloat(amount),
           price: currentPrice,
           value,
+          currency: lang === "id" ? "idr" : "usd" // Store currency type
         },
       ]);
 
@@ -78,6 +76,34 @@ export default function PortfolioCalculator() {
       console.error("Error adding coin:", error);
     }
   };
+
+  // Update currency when language changes
+  useEffect(() => {
+    const updatePortfolioCurrency = async () => {
+      try {
+        const updatedPortfolio = await Promise.all(
+          portfolio.map(async (coin) => {
+            const coinData = await getCoinDetail(coin.id);
+            const newPrice = coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
+            const newValue = newPrice * coin.amount;
+            return {
+              ...coin,
+              price: newPrice,
+              value: newValue,
+              currency: lang === "id" ? "idr" : "usd"
+            };
+          })
+        );
+        setPortfolio(updatedPortfolio);
+      } catch (error) {
+        console.error("Error updating portfolio currency:", error);
+      }
+    };
+
+    if (portfolio.length > 0) {
+      updatePortfolioCurrency();
+    }
+  }, [lang]); // Update when language changes
 
   // Save to localStorage whenever portfolio changes
   useEffect(() => {
@@ -137,7 +163,10 @@ export default function PortfolioCalculator() {
                 {filteredCoins.map((coin) => (
                   <button
                     key={coin.id}
-                    onClick={() => setSelectedCoin(coin)}
+                    onClick={() => {
+                      setSelectedCoin(coin);
+                      setSearchQuery(coin.name); // Set search query to selected coin name
+                    }}
                     className={`w-full px-4 py-3 text-left hover:bg-opacity-50 ${
                       isDark
                         ? "hover:bg-gray-700 text-gray-300"

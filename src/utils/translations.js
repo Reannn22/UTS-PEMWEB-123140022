@@ -53,6 +53,25 @@ export const translations = {
           dailyTransactions: "Rp350M+",
           teamMembers: "20+"
         }
+      },
+      mission: {
+        title: "Misi Kami",
+        description: "Untuk mendemokratisasi perdagangan cryptocurrency dengan menyediakan alat yang mudah diakses, aman, dan inovatif bagi semua orang. Kami berusaha untuk membuat manajemen aset digital menjadi sederhana dan transparan."
+      },
+      vision: {
+        title: "Visi Kami",
+        description: "Menjadi platform terkemuka dunia untuk pelacakan cryptocurrency dan manajemen portofolio, memberdayakan jutaan pengguna untuk berpartisipasi dalam masa depan keuangan."
+      },
+      team: {
+        title: "Temui Tim Kami"
+      },
+      journey: {
+        title: "Perjalanan Kami",
+        milestones: {
+          2021: "Mendirikan CryptoTracker dengan visi untuk menyederhanakan trading crypto",
+          2022: "Memperluas layanan kami ke 150+ pasar global",
+          2023: "Mencapai tonggak 10.000+ pengguna aktif"
+        }
       }
     },
     metrics: {
@@ -249,6 +268,25 @@ export const translations = {
           globalMarket: "150+",
           dailyTransactions: "$50M+",
           teamMembers: "20+"
+        }
+      },
+      mission: {
+        title: "Our Mission",
+        description: "To democratize cryptocurrency trading by providing accessible, secure, and innovative tools for everyone. We strive to make digital asset management simple and transparent."
+      },
+      vision: {
+        title: "Our Vision",
+        description: "To become the world's leading platform for cryptocurrency tracking and portfolio management, empowering millions of users to participate in the future of finance."
+      },
+      team: {
+        title: "Meet Our Team"
+      },
+      journey: {
+        title: "Our Journey",
+        milestones: {
+          2021: "Founded CryptoTracker with a vision to simplify crypto trading",
+          2022: "Expanded our services to 150+ global markets",
+          2023: "Reached 10,000+ active users milestone"
         }
       }
     },
