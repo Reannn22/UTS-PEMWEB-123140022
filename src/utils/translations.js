@@ -169,12 +169,6 @@ export const translations = {
       price: "Harga",
       volume: "Volume"
     },
-    metrics: {
-      activeUsers: "Pengguna Aktif",
-      globalMarkets: "Pasar Global",
-      dailyTransactions: "Transaksi Harian",
-      teamMembers: "Anggota Tim",
-    },
     portfolio: {
       title: "Kalkulator Portfolio",
       coinName: "Nama Koin",
@@ -369,12 +363,6 @@ export const translations = {
       back: "Back",
       price: "Price",
       volume: "Volume"
-    },
-    metrics: {
-      activeUsers: "Active Users",
-      globalMarkets: "Global Markets",
-      dailyTransactions: "Daily Transactions",
-      teamMembers: "Team Members",
     },
     portfolio: {
       title: "Portfolio Calculator",

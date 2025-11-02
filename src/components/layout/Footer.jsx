@@ -224,7 +224,7 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
           </div>
           <div className="flex gap-4 mt-4 md:mt-0">
             <a
-              href="#"
+              href="privacy"
               className={`text-sm ${
                 isDark ? "text-gray-400 hover:text-white" : "text-gray-600"
               }`}
@@ -232,7 +232,7 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
               {t.privacy}
             </a>
             <a
-              href="#"
+              href="/terms"
               className={`text-sm ${
                 isDark ? "text-gray-400 hover:text-white" : "text-gray-600"
               }`}

@@ -123,9 +123,7 @@ export default function PortfolioCalculator() {
               className={`text-3xl font-bold ${
                 isDark ? "text-white" : "text-gray-900"
               }`}
-            >
-              {t.title}
-            </h1>
+            ></h1>
 
             {/* Search Input */}
             <div className="relative mb-6">
