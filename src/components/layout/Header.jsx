@@ -196,19 +196,15 @@ const Header = () => {
   // Update isMenuActive function
   const isMenuActive = (href) => {
     const currentPath = window.location.pathname;
-    if (href === "/") {
-      return currentPath === "/" || currentPath === "";
+    const isCoinRoute = currentPath.startsWith('/coin/');
+
+    // For cryptocurrency list or coin detail pages
+    if (href === '/cryptocurrencylist') {
+      return currentPath === '/cryptocurrencylist' || isCoinRoute;
     }
-    if (href === "/cryptocurrencylist") {
-      return (
-        currentPath === "/cryptocurrencylist" ||
-        currentPath.startsWith("/coin/")
-      );
-    }
-    if (href === "/portfoliocalculator") {
-      return currentPath === "/portfoliocalculator";
-    }
-    return window.location.hash === href;
+
+    // For other routes, exact match only
+    return currentPath === href;
   };
 
   // Update the effect to also run when navigationItems change

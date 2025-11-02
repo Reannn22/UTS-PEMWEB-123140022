@@ -26,10 +26,13 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [bgImages.length]);
 
+  const handlePortfolioCalculator = () => {
+    window.location.href = "/portfoliocalculator";
+  };
+
   const handleViewMarkets = () => {
     window.location.href = "/cryptocurrencylist";
   };
-
 
   return (
     <div
@@ -59,8 +62,11 @@ export default function HomePage() {
               {t.hero?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-primary-500/20">
-                {t.hero?.startTrading}
+              <button
+                onClick={handlePortfolioCalculator}
+                className="px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-primary-500/20"
+              >
+                {t.hero?.startPortfolio}
               </button>
               <button
                 onClick={handleViewMarkets}

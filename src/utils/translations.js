@@ -36,7 +36,8 @@ export const translations = {
         title: "Masa Depan Trading Crypto",
         description: "Rasakan pelacakan cryptocurrency real-time dengan analitik canggih dan alat manajemen portofolio yang powerful",
         startTrading: "Mulai Trading",
-        viewMarkets: "Lihat Pasar"
+        viewMarkets: "Lihat Pasar",
+        startPortfolio: "Mulai Kalkulator Portfolio"
       }
     },
     about: {
@@ -252,7 +253,8 @@ export const translations = {
         title: "The Future of Crypto Trading",
         description: "Experience real-time cryptocurrency tracking with advanced analytics and powerful portfolio management tools",
         startTrading: "Start Trading",
-        viewMarkets: "View Markets"
+        viewMarkets: "View Markets",
+        startPortfolio: "Start Portfolio Calculator"
       }
     },
     about: {

@@ -54,7 +54,8 @@ export default function PortfolioCalculator() {
 
     try {
       const coinData = await getCoinDetail(selectedCoin.id);
-      const currentPrice = coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
+      const currentPrice =
+        coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
       const value = currentPrice * parseFloat(amount);
 
       setPortfolio((prev) => [
@@ -66,7 +67,7 @@ export default function PortfolioCalculator() {
           amount: parseFloat(amount),
           price: currentPrice,
           value,
-          currency: lang === "id" ? "idr" : "usd" // Store currency type
+          currency: lang === "id" ? "idr" : "usd", // Store currency type
         },
       ]);
 
@@ -84,13 +85,14 @@ export default function PortfolioCalculator() {
         const updatedPortfolio = await Promise.all(
           portfolio.map(async (coin) => {
             const coinData = await getCoinDetail(coin.id);
-            const newPrice = coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
+            const newPrice =
+              coinData.market_data.current_price[lang === "id" ? "idr" : "usd"];
             const newValue = newPrice * coin.amount;
             return {
               ...coin,
               price: newPrice,
               value: newValue,
-              currency: lang === "id" ? "idr" : "usd"
+              currency: lang === "id" ? "idr" : "usd",
             };
           })
         );

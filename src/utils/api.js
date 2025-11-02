@@ -1,26 +1,55 @@
 import { API_BASE_URL, API_ENDPOINTS, DEFAULT_CURRENCY, API_KEY } from './constants';
-import { saveToStorage, getFromStorage } from './storage';
 
 const headers = API_KEY ? { 'X-CG-Api-Key': API_KEY } : {};
 
-export const getCoinsMarkets = async (params = {}) => {
-  const cacheKey = `markets_${JSON.stringify(params)}`;
-  const cachedData = getFromStorage(cacheKey);
-
-  if (cachedData) {
-    return cachedData;
-  }
-
+// Add cache helper functions
+const saveToCache = (key, data) => {
   try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving to cache:', error);
+  }
+};
+
+const getFromCache = (key) => {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error reading from cache:', error);
+    return null;
+  }
+};
+
+// Add function to fetch local JSON
+const fetchLocalJson = async (filename) => {
+  try {
+    const response = await fetch(`/${filename}`);
+    if (!response.ok) throw new Error('Failed to fetch local JSON');
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching ${filename}:`, error);
+    return null;
+  }
+};
+
+export const getCoinsMarkets = async (params = {}) => {
+  try {
+    // Try to get data from local JSON first
+    const localData = await fetchLocalJson('cryptocurrencylist.json');
+    if (localData) {
+      console.log('Using local cryptocurrencylist.json');
+      return localData;
+    }
+
+    // Fallback to API if local file not available
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams(params)}`,
       { headers }
     );
 
     if (!response.ok) throw new Error('Failed to fetch coins data');
-    const data = await response.json();
-    saveToStorage(cacheKey, data);
-    return data;
+    return await response.json();
   } catch (error) {
     throw error;
   }
@@ -46,14 +75,15 @@ export const getCoinDetail = async (coinId) => {
 };
 
 export const getCoinMarketChart = async (coinId, days = 7) => {
-  const cacheKey = `chart_${coinId}_${days}`;
-  const cachedData = getFromStorage(cacheKey);
-
-  if (cachedData) {
-    return cachedData;
-  }
-
   try {
+    // Try to get data from local JSON first
+    const localData = await fetchLocalJson('chartpage.json');
+    if (localData) {
+      console.log('Using local chartpage.json');
+      return localData;
+    }
+
+    // Fallback to API if local file not available
     const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/market_chart?${new URLSearchParams(params)}`,
@@ -61,9 +91,7 @@ export const getCoinMarketChart = async (coinId, days = 7) => {
     );
 
     if (!response.ok) throw new Error('Failed to fetch market chart data');
-    const data = await response.json();
-    saveToStorage(cacheKey, data);
-    return data;
+    return await response.json();
   } catch (error) {
     throw error;
   }
@@ -71,11 +99,8 @@ export const getCoinMarketChart = async (coinId, days = 7) => {
 
 export const getCoinOhlc = async (coinId, days) => {
   const cacheKey = `ohlc_${coinId}_${days}`;
-  const cachedData = getFromStorage(cacheKey);
-
-  if (cachedData) {
-    return cachedData;
-  }
+  const cachedData = getFromCache(cacheKey);
+  if (cachedData) return cachedData;
 
   try {
     const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
@@ -86,7 +111,7 @@ export const getCoinOhlc = async (coinId, days) => {
 
     if (!response.ok) throw new Error('Failed to fetch OHLC data');
     const data = await response.json();
-    saveToStorage(cacheKey, data);
+    saveToCache(cacheKey, data);
     return data;
   } catch (error) {
     throw error;
