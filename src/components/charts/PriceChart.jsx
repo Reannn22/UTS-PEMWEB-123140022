@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
-import { getCoinMarketChart, getCoinOhlc } from "../../utils/api";
+import { getCoinMarketChart } from "../../utils/api";
 import { formatCurrency } from "../../utils/helpers";
 import { Chart } from "react-chartjs-2"; // Add this import
 
@@ -57,18 +57,17 @@ const PriceChart = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setError(null); // Reset error
-        let formattedData;
+        setError(null);
 
-        // --- Logika untuk Tipe Chart Garis (Line) ---
+        // Always get data from getCoinMarketChart for both chart types
+        const data = await getCoinMarketChart(coinId, parseInt(timeRange));
+        if (!data?.prices?.length) {
+          throw new Error("Invalid chart data received");
+        }
+
         if (chartType === "line") {
-          const data = await getCoinMarketChart(coinId, parseInt(timeRange));
-          if (!data?.prices?.length) {
-            throw new Error("Invalid chart data received");
-          }
-
-          formattedData = data.prices.map(([timestamp, price]) => ({
-            x: timestamp, // Gunakan timestamp untuk skala timeseries
+          const formattedData = data.prices.map(([timestamp, price]) => ({
+            x: timestamp,
             y: lang === "id" ? price * 15500 : price,
           }));
 
@@ -83,29 +82,50 @@ const PriceChart = ({
               },
             ],
           });
-
-          // --- Logika untuk Tipe Chart Lilin (Candle) ---
         } else if (chartType === "candle") {
-          // Anda HARUS membuat fungsi 'getCoinOhlc' di 'utils/api.js'
-          // Endpoint-nya: /api/v3/coins/{id}/ohlc?vs_currency=usd&days={timeRange}
-          const data = await getCoinOhlc(coinId, parseInt(timeRange));
-          if (!data?.length) {
-            throw new Error("Invalid OHLC data received");
-          }
+          // Convert price data to OHLC format using time windows
+          const candleData = [];
+          const timeWindow = 3600000; // 1 hour in milliseconds
 
-          formattedData = data.map(([timestamp, open, high, low, close]) => ({
-            x: timestamp,
-            o: lang === "id" ? open * 15500 : open,
-            h: lang === "id" ? high * 15500 : high,
-            l: lang === "id" ? low * 15500 : low,
-            c: lang === "id" ? close * 15500 : close,
-          }));
+          let currentWindow = {
+            timestamp: data.prices[0][0],
+            open: data.prices[0][1],
+            high: data.prices[0][1],
+            low: data.prices[0][1],
+            close: data.prices[0][1],
+          };
+
+          data.prices.forEach(([timestamp, price]) => {
+            if (timestamp - currentWindow.timestamp > timeWindow) {
+              // Add completed candle
+              candleData.push({
+                x: currentWindow.timestamp,
+                o: lang === "id" ? currentWindow.open * 15500 : currentWindow.open,
+                h: lang === "id" ? currentWindow.high * 15500 : currentWindow.high,
+                l: lang === "id" ? currentWindow.low * 15500 : currentWindow.low,
+                c: lang === "id" ? currentWindow.close * 15500 : currentWindow.close,
+              });
+
+              // Start new window
+              currentWindow = {
+                timestamp,
+                open: price,
+                high: price,
+                low: price,
+                close: price,
+              };
+            } else {
+              // Update current window
+              currentWindow.high = Math.max(currentWindow.high, price);
+              currentWindow.low = Math.min(currentWindow.low, price);
+              currentWindow.close = price;
+            }
+          });
 
           setChartData({
             datasets: [
               {
-                data: formattedData,
-                // Styling akan di-handle di options
+                data: candleData,
               },
             ],
           });

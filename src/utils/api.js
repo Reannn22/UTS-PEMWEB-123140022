@@ -21,33 +21,49 @@ const getFromCache = (key) => {
   }
 };
 
-// Add function to fetch local JSON
+// Update fetchLocalJson function
 const fetchLocalJson = async (filename) => {
   try {
-    const response = await fetch(`/${filename}`);
-    if (!response.ok) throw new Error('Failed to fetch local JSON');
-    return await response.json();
+    const response = await fetch(`/data/${filename}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+      return null;
+    }
+
+    const text = await response.text();
+    try {
+      const cleanText = text.replace(/^\uFEFF/, ''); // Remove BOM if present
+      return JSON.parse(cleanText);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError);
+      return null;
+    }
   } catch (error) {
-    console.error(`Error fetching ${filename}:`, error);
+    console.error(`Error loading ${filename}:`, error);
     return null;
   }
 };
 
 export const getCoinsMarkets = async (params = {}) => {
   try {
-    // Try to get data from local JSON first
+    // Always try local data first
     const localData = await fetchLocalJson('cryptocurrencylist.json');
     if (localData) {
-      console.log('Using local cryptocurrencylist.json');
+      console.log('Using local cryptocurrency data');
       return localData;
     }
-
-    // Fallback to API if local file not available
+    // Fallback to API only if local fails
+    console.log('Falling back to API for cryptocurrency data');
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COINS_MARKETS}?${new URLSearchParams(params)}`,
       { headers }
     );
-
     if (!response.ok) throw new Error('Failed to fetch coins data');
     return await response.json();
   } catch (error) {
@@ -76,20 +92,19 @@ export const getCoinDetail = async (coinId) => {
 
 export const getCoinMarketChart = async (coinId, days = 7) => {
   try {
-    // Try to get data from local JSON first
+    // Always try local chart data first
     const localData = await fetchLocalJson('chartpage.json');
     if (localData) {
-      console.log('Using local chartpage.json');
+      console.log('Using local chart data');
       return localData;
     }
-
-    // Fallback to API if local file not available
+    // Fallback to API only if local fails
+    console.log('Falling back to API for chart data');
     const params = { vs_currency: DEFAULT_CURRENCY, days: days.toString() };
     const response = await fetch(
       `${API_BASE_URL}${API_ENDPOINTS.COIN_DETAIL}/${coinId}/market_chart?${new URLSearchParams(params)}`,
       { headers }
     );
-
     if (!response.ok) throw new Error('Failed to fetch market chart data');
     return await response.json();
   } catch (error) {
