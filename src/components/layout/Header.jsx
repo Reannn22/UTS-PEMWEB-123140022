@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "../../context/ThemeContext";
+import { useLanguage } from "../../context/LanguageContext";
 import logoImage from "../../assets/images/logo/CryptoTracker.png";
 import moonIcon from "../../assets/icons/moon.svg";
 import sunIcon from "../../assets/icons/sun.svg";
@@ -89,20 +90,35 @@ function MenuIcon({ isOpen }) {
 
 const Header = () => {
   const { isDark, setIsDark } = useTheme();
-  const [lang, setLang] = useState(localStorage.getItem("lang") || "en");
+  const { lang, updateLanguage } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [underlineStyle, setUnderlineStyle] = useState({ width: 0, left: 0 });
-  const menuRef = useRef(null);
-  const itemRefs = useRef([]);
+  const [redirectTimeout, setRedirectTimeout] = useState(null);
+  const itemRefs = useRef([]); // Make sure this is defined before any usage
+  const mobileMenuRef = useRef(null);
+
+  itemRefs.current = []; // Reset refs array on each render
+
+  // Add immediate redirect function
+  const redirectToSearch = (value) => {
+    if (value && window.location.pathname !== "/cryptocurrencylist") {
+      window.location.href = `/cryptocurrencylist?search=${encodeURIComponent(
+        value
+      )}`;
+    }
+  };
 
   // Update navigation items with translations
   const navigationItems = useMemo(
     () => [
       { href: "/", label: translations[lang].menu.home },
-      { href: "#portfolio", label: translations[lang].menu.cryptoList },
+      {
+        href: "/cryptocurrencylist",
+        label: translations[lang].menu.cryptoList,
+      },
       { href: "#trending", label: translations[lang].menu.portfolio },
     ],
     [lang]
@@ -117,11 +133,61 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Update search handler to work without router
+  // Update search handler
   const handleSearch = (value) => {
     setSearchValue(value);
-    // You can implement custom search logic here
+
+    if (redirectTimeout) {
+      clearTimeout(redirectTimeout);
+    }
+
+    if (window.location.pathname !== "/cryptocurrencylist") {
+      const timeoutId = setTimeout(() => {
+        redirectToSearch(value);
+      }, 1500);
+      setRedirectTimeout(timeoutId);
+    } else {
+      // If already on cryptocurrency list page, just update URL and trigger event
+      const url = new URL(window.location);
+      if (value) {
+        url.searchParams.set("search", value);
+      } else {
+        url.searchParams.delete("search");
+      }
+      window.history.pushState({}, "", url);
+
+      // Dispatch event for CryptocurrencyList component
+      window.dispatchEvent(
+        new CustomEvent("headerSearch", { detail: { value } })
+      );
+    }
   };
+
+  // Add keypress handler
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      if (redirectTimeout) {
+        clearTimeout(redirectTimeout);
+      }
+      redirectToSearch(searchValue);
+    }
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (redirectTimeout) {
+        clearTimeout(redirectTimeout);
+      }
+    };
+  }, [redirectTimeout]);
+
+  // Add effect to sync search value from URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const searchParam = params.get("search") || "";
+    setSearchValue(searchParam);
+  }, []);
 
   // Add function to check if menu item is active
   const isMenuActive = (href) => {
@@ -129,6 +195,9 @@ const Header = () => {
       return (
         window.location.pathname === "/" || window.location.pathname === ""
       );
+    }
+    if (href === "/cryptocurrencylist") {
+      return window.location.pathname === "/cryptocurrencylist";
     }
     return window.location.hash === href;
   };
@@ -176,22 +245,69 @@ const Header = () => {
     setHoveredIndex(null);
   };
 
+  // Update URL parameters and localStorage
+  const updateURLParams = (key, value) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set(key, value);
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${params}`
+    );
+    localStorage.setItem(key, value);
+
+    // Dispatch custom event for other components
+    window.dispatchEvent(new Event("storage"));
+  };
+
+  // Update language handler
+  const handleLanguageChange = () => {
+    updateLanguage(lang === "en" ? "id" : "en");
+  };
+
+  // Update theme handler
+  const handleThemeChange = () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    updateURLParams("theme", newTheme ? "dark" : "light");
+  };
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   // Update the hover and text color logic in the navigation section
   return (
-    <header
-      className={`
-        fixed w-full top-0 left-0 right-0 z-50
-        ${
-          isScrolled
-            ? isDark
-              ? "bg-gray-900/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
-              : "bg-white/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
-            : isDark
-            ? "bg-gray-900 shadow-md shadow-cyan-500/20"
-            : "bg-white shadow-md shadow-cyan-500/20"
-        }
-      `}
-    >
+    <header
+      className={`
+        fixed w-full top-0 left-0 right-0 z-50
+        ${
+          isScrolled
+            ? isDark
+              ? "bg-gray-900/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
+              : "bg-white/70 backdrop-blur-md backdrop-saturate-150 shadow-md shadow-cyan-500/20"
+            : isDark
+            ? "bg-gray-900"
+            : "bg-white"
+        }
+      `}
+    >
       <div className="container mx-auto px-6">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -261,6 +377,7 @@ const Header = () => {
                 type="text"
                 value={searchValue}
                 onChange={(e) => handleSearch(e.target.value)}
+                onKeyPress={handleKeyPress}
                 placeholder={translations[lang].menu.search}
                 className={`
                   w-48 pl-10 pr-4 py-2 text-sm rounded-lg
@@ -286,7 +403,7 @@ const Header = () => {
             <div className="hidden lg:flex items-center gap-6">
               {/* Updated Language Toggle */}
               <button
-                onClick={() => setLang(lang === "en" ? "id" : "en")}
+                onClick={handleLanguageChange}
                 className="flex items-center gap-2 min-w-[50px]"
               >
                 <LanguageIcon isDark={isDark} />
@@ -301,7 +418,7 @@ const Header = () => {
 
               {/* Desktop Theme Toggle */}
               <button
-                onClick={() => setIsDark(!isDark)}
+                onClick={handleThemeChange}
                 className="flex items-center gap-2 min-w-[45px]"
               >
                 <ThemeIcon isDark={isDark} />
@@ -330,7 +447,7 @@ const Header = () => {
       {/* Updated Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden">
-          <div className="container mx-auto p-4">
+          <div ref={mobileMenuRef} className="container mx-auto p-4">
             {/* Updated Mobile Search Bar */}
             <div className="relative mb-4">
               <input
@@ -345,10 +462,10 @@ const Header = () => {
                   ${
                     isDark
                       ? searchValue
-                        ? "bg-gray-800/50 text-cyan-400"
+                        ? "bg-gray-800/50 text-gray-400"
                         : "bg-gray-800/50 text-gray-300"
                       : searchValue
-                      ? "bg-gray-100/50 text-cyan-600"
+                      ? "bg-gray-100/50 text-gray-600"
                       : "bg-gray-100/50 text-gray-600"
                   }
                 `}
@@ -384,12 +501,11 @@ const Header = () => {
             </div>
 
             {/* Updated Settings Section */}
-            {/* Updated Settings Section */}
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-4 justify-between">
                 {/* Updated Language Toggle (dijadikan button) */}
                 <button
-                  onClick={() => setLang(lang === "en" ? "id" : "en")}
+                  onClick={handleLanguageChange}
                   className="flex items-center gap-2"
                 >
                   <LanguageIcon isDark={isDark} />
@@ -404,7 +520,7 @@ const Header = () => {
 
                 {/* Mobile Theme Toggle (ditambahkan ThemeIcon) */}
                 <button
-                  onClick={() => setIsDark(!isDark)}
+                  onClick={handleThemeChange}
                   className="flex items-center gap-2"
                 >
                   <ThemeIcon isDark={isDark} />

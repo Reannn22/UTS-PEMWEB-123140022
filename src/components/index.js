@@ -6,11 +6,12 @@ export { default as Footer } from './layout/Footer';
 export { default as ErrorMessage } from './common/ErrorMessage';
 export { default as Loading } from './common/Loading';
 export { default as SearchForm } from './common/SearchForm';
+export { default as ScrollToTop } from './common/ScrollToTop';
 
 // Data components
-export { default as DataTable } from './data/DataTable';
-export { default as DetailCard } from './data/DetailCard';
-export { default as PortfolioCalculator } from './data/PortfolioCalculator';
+export { default as DataTable } from './pages/CryptocurrencyList';
+export { default as DetailCard } from './pages/DetailCard';
+export { default as PortfolioCalculator } from './pages/PortfolioCalculator';
 
 // Chart components
 export { default as PriceChart } from './charts/PriceChart';

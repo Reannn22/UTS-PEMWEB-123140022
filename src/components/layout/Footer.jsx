@@ -1,12 +1,46 @@
 import PropTypes from "prop-types";
+import { useTheme } from "../../context/ThemeContext";
+import logoImage from "../../assets/images/logo/CryptoTracker.png";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../utils/translations"; // Adjust the path as necessary
+import { Link, useLocation } from "react-router-dom";
+import AppLink from "../common/AppLink";
+
+// Logo component matching header style
+function Logo({ isDark }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex-shrink-0 w-8 h-8">
+        <img
+          src={logoImage}
+          alt="CryptoTracker"
+          className="w-full h-full object-contain"
+        />
+      </div>
+      <div className="text-xl font-bold">
+        <span className={isDark ? "text-cyan-400" : "text-cyan-600"}>
+          Crypto
+        </span>
+        <span className={isDark ? "text-cyan-400" : "text-cyan-600"}>
+          Tracker
+        </span>
+      </div>
+    </div>
+  );
+}
 
 const SocialIcon = ({ href, icon, label }) => {
+  const { isDark } = useTheme();
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors"
+      className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+        isDark
+          ? "bg-gray-800 hover:bg-gray-700"
+          : "bg-gray-100 hover:bg-gray-200"
+      }`}
       aria-label={label}
     >
       {icon}
@@ -15,39 +49,133 @@ const SocialIcon = ({ href, icon, label }) => {
 };
 
 const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
+  const { isDark } = useTheme();
+  const { lang } = useLanguage();
+  const location = useLocation();
+  const t = translations[lang]?.footer || {};
+
+  // Helper to check if link is active
+  const isActive = (path) => location.pathname === path;
+
+  const resourceLinks = [
+    { to: "/", text: t.resources.home },
+    { to: "/cryptocurrencylist", text: t.resources.cryptoList },
+    { to: "/portfolio", text: t.resources.portfolio },
+  ];
+
+  const companyLinks = [
+    { to: "/about", text: t.company.about },
+    { to: "/contact", text: t.company.contact },
+    { to: "/privacy", text: t.company.privacy },
+    { to: "/terms", text: t.company.terms },
+  ];
+
   return (
-    <footer className="mt-auto py-8 border-t border-gray-200">
-      <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer
+      className={`
+        relative mt-auto py-12 
+        before:absolute before:inset-x-0 before:top-0 before:h-8
+        before:bg-gradient-to-b before:from-cyan-500/20 before:to-transparent
+        ${
+          isDark
+            ? "bg-black shadow-[0_-1px_15px_rgb(0,0,0,0.4)]"
+            : "bg-white shadow-[0_-1px_15px_rgb(0,0,0,0.1)]"
+        }
+      `}
+    >
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* About Section */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">About Crypto Tracker</h3>
-            <p className="text-gray-600 text-sm">
-              Real-time cryptocurrency tracking application with price alerts,
-              portfolio management, and market analytics.
+          <div className="md:pr-8">
+            <Logo isDark={isDark} />
+            <p
+              className={`mt-4 text-sm ${
+                isDark ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
+              {t.about.description}
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>CoinGecko API</li>
-              <li>Documentation</li>
-              <li>Market Data</li>
-              <li>Portfolio Tools</li>
+          {/* Resources Section */}
+          <div className="md:px-4">
+            <h3
+              className={`text-lg font-semibold mb-4 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {t.resources.title}
+            </h3>
+            <ul className="space-y-2">
+              {resourceLinks.map(({ to, text }) => (
+                <li key={text}>
+                  <AppLink
+                    to={to}
+                    className={`text-sm ${
+                      isDark
+                        ? isActive(to)
+                          ? "text-white"
+                          : "text-gray-400 hover:text-white"
+                        : isActive(to)
+                        ? "text-gray-900"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    {text}
+                  </AppLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Section */}
+          <div className="md:px-4">
+            <h3
+              className={`text-lg font-semibold mb-4 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {t.company.title}
+            </h3>
+            <ul className="space-y-2">
+              {companyLinks.map(({ to, text }) => (
+                <li key={text}>
+                  <AppLink
+                    to={to}
+                    className={`text-sm ${
+                      isDark
+                        ? isActive(to)
+                          ? "text-white"
+                          : "text-gray-400 hover:text-white"
+                        : isActive(to)
+                        ? "text-gray-900"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    {text}
+                  </AppLink>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Connect Section */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Connect</h3>
-            <div className="flex space-x-4 mb-4">
+          <div className="md:pl-8">
+            <h3
+              className={`text-lg font-semibold mb-4 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {t.connect}
+            </h3>
+            <div className="flex space-x-4 mb-6">
               <SocialIcon
                 href="https://github.com/Reannn22"
                 icon={
                   <svg
-                    className="w-5 h-5"
+                    className={`w-5 h-5 ${
+                      isDark ? "text-white" : "text-gray-900"
+                    }`}
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -60,7 +188,9 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
                 href="https://www.linkedin.com/in/reyhancm/"
                 icon={
                   <svg
-                    className="w-5 h-5"
+                    className={`w-5 h-5 ${
+                      isDark ? "text-white" : "text-gray-900"
+                    }`}
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -70,23 +200,37 @@ const Footer = ({ authorName = "Reyhan Capri Moraga", nim = "123140022" }) => {
                 label="LinkedIn"
               />
             </div>
-            <p className="text-sm text-gray-600">
-              Created by {authorName}{" "}
+            <p
+              className={`text-sm ${
+                isDark ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
+              {t.created} {authorName}{" "}
               <span className="opacity-75">({nim})</span>
             </p>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-600">
-          <p>
-            &copy; {new Date().getFullYear()} Crypto Tracker. All rights
-            reserved.
+        <div
+          className={`mt-12 pt-8 border-t ${
+            isDark ? "border-gray-800" : "border-gray-200"
+          } text-center`}
+        >
+          <p
+            className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}
+          >
+            &copy; {new Date().getFullYear()} CryptoTracker. {t.rights}
           </p>
         </div>
       </div>
     </footer>
   );
+};
+
+// PropTypes
+Logo.propTypes = {
+  isDark: PropTypes.bool.isRequired,
 };
 
 SocialIcon.propTypes = {

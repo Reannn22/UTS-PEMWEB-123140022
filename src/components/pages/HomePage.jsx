@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "../../context/ThemeContext";
-import { Header, Footer } from "../../components";
+import { useLanguage } from "../../context/LanguageContext";
+import { translations } from "../../utils/translations";
+import { Header, Footer, ScrollToTop } from "../../components";
 
 export default function HomePage({ dataLimit = 10 }) {
   const { isDark } = useTheme();
+  const { lang } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+
+  const t = translations[lang]?.home || {};
 
   const bgImages = [
     "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1920", // Modern crypto
@@ -15,10 +21,14 @@ export default function HomePage({ dataLimit = 10 }) {
     "https://images.unsplash.com/photo-1634704784915-aacf363b021f?q=80&w=1920", // Future finance
   ];
 
-  // Background rotation effect
+  // Updated background rotation with fade effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBgIndex((prev) => (prev + 1) % bgImages.length);
+      setFadeIn(false);
+      setTimeout(() => {
+        setCurrentBgIndex((prev) => (prev + 1) % bgImages.length);
+        setFadeIn(true);
+      }, 500); // Half of transition duration
     }, 5000);
     return () => clearInterval(interval);
   }, [bgImages.length]);
@@ -26,6 +36,10 @@ export default function HomePage({ dataLimit = 10 }) {
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => setLoading(false), 1000);
+  };
+
+  const handleViewMarkets = () => {
+    window.location.href = "/cryptocurrencylist";
   };
 
   const features = [
@@ -54,73 +68,49 @@ export default function HomePage({ dataLimit = 10 }) {
       }`}
     >
       <Header />
-
-      <main className="flex-grow">
-        {/* Hero Section */}
+      <ScrollToTop />
+      <main className="flex-1 flex flex-col">
+        {/* Hero Section with Fade Transition */}
         <section
-          className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
+          className={`
+            relative w-full min-h-screen flex items-center justify-center bg-cover bg-center
+            transition-opacity duration-1000
+            ${fadeIn ? "opacity-100" : "opacity-0"}
+          `}
           style={{
             backgroundImage: `url(${bgImages[currentBgIndex]})`,
-            transition: "background-image 1s ease-in-out",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-[2px]"></div>
           <div className="relative z-10 container mx-auto px-4 text-center">
             <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white leading-tight">
-              The Future of <span className="text-primary-500">Crypto</span>{" "}
-              Trading
+              {t.hero?.title || "The Future of Crypto Trading"}
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto">
-              Experience real-time cryptocurrency tracking with advanced
-              analytics and powerful portfolio management tools
+              {t.hero?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-primary-500/20">
-                Start Trading Now
+                {t.hero?.startTrading}
               </button>
-              <button className="px-8 py-4 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all backdrop-blur-sm">
-                View Markets
+              <button
+                onClick={handleViewMarkets}
+                className="px-8 py-4 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all backdrop-blur-sm"
+              >
+                {t.hero?.viewMarkets}
               </button>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className={`py-20 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
+        <section className={isDark ? "bg-gray-900" : "bg-gray-50"}>
           <div className="container mx-auto px-4">
             <h2
-              className={`text-3xl md:text-4xl font-bold text-center mb-16 ${
+              className={`text-3xl md:text-4xl font-bold text-center ${
                 isDark ? "text-white" : "text-gray-900"
               }`}
-            >
-              Why Choose CryptoTracker
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className={`p-8 rounded-2xl transition-all hover:transform hover:scale-105 ${
-                    isDark
-                      ? "bg-gray-800 hover:bg-gray-800/80"
-                      : "bg-white hover:bg-gray-50"
-                  } shadow-xl`}
-                >
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3
-                    className={`text-xl font-bold mb-4 ${
-                      isDark ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {feature.title}
-                  </h3>
-                  <p
-                    className={`${isDark ? "text-gray-400" : "text-gray-600"}`}
-                  >
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+            ></h2>
           </div>
         </section>
       </main>

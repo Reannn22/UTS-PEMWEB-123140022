@@ -1,0 +1,8 @@
+{
+  "short_name": "CryptoTracker",
+  "name": "CryptoTracker - Real-time Cryptocurrency Tracking",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

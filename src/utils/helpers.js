@@ -1,11 +1,15 @@
-export const formatCurrency = (value) => {
-  if (!value && value !== 0) return 'N/A';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value);
+export const formatCurrency = (value, currency = 'USD') => {
+  try {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }).format(value);
+  } catch (error) {
+    console.error('Error formatting currency:', error);
+    return `${currency} ${value}`;
+  }
 };
 
 export const formatNumber = (value) => {
