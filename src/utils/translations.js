@@ -111,7 +111,6 @@ export const translations = {
     },
     privacy: {
       title: "Kebijakan Privasi",
-      lastUpdated: "Terakhir Diperbarui",
       sections: [
         {
           title: "Pengumpulan Informasi",
@@ -133,7 +132,6 @@ export const translations = {
     },
     terms: {
       title: "Ketentuan Layanan",
-      lastUpdated: "Terakhir Diperbarui",
       sections: [
         {
           title: "Persetujuan Ketentuan",
@@ -335,7 +333,6 @@ export const translations = {
     },
     privacy: {
       title: "Privacy Policy",
-      lastUpdated: "Last Updated",
       sections: [
         {
           title: "Information Collection",
@@ -357,7 +354,6 @@ export const translations = {
     },
     terms: {
       title: "Terms of Service",
-      lastUpdated: "Last Updated",
       sections: [
         {
           title: "Agreement to Terms",

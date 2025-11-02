@@ -20,30 +20,23 @@ export default function Terms() {
       <ScrollToTop />
 
       {/* Hero Section */}
-      <section className="relative mt-16 py-20 overflow-hidden">
+      <section className="relative mt-16 py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent" />
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h1
-              className={`text-5xl font-bold mb-6 ${
+              className={`text-4xl font-bold mb-6 ${
                 isDark ? "text-white" : "text-gray-900"
               }`}
             >
               {t.title}
             </h1>
-            <p
-              className={`text-lg ${
-                isDark ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              Last updated: {new Date().toLocaleDateString()}
-            </p>
           </div>
         </div>
       </section>
 
       {/* Terms Content */}
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto space-y-8">
             {t.sections.map((section, index) => (

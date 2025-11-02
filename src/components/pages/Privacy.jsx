@@ -20,31 +20,23 @@ export default function Privacy() {
       <ScrollToTop />
 
       {/* Hero Section */}
-      <section className="relative mt-16 py-20 overflow-hidden">
+      <section className="relative mt-16 py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent" />
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h1
-              className={`text-5xl font-bold mb-6 ${
+              className={`text-4xl font-bold mb-6 ${
                 isDark ? "text-white" : "text-gray-900"
               }`}
             >
               {t.title}
             </h1>
-            <p
-              className={`text-sm mt-2 ${
-                isDark ? "text-gray-400" : "text-gray-500"
-              }`}
-            >
-              {t.lastUpdated}:{" "}
-              {new Date().toLocaleDateString(lang === "id" ? "id-ID" : "en-US")}
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="py-16">
+      {/* Content Section - Reduced top padding */}
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {t.sections.map((section, index) => (
