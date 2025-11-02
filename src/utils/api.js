@@ -25,37 +25,6 @@ const getFromCache = (key) => {
   }
 };
 
-// Update fetchLocalJson function
-const fetchLocalJson = async (filename) => {
-  try {
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? window.location.origin
-      : '';
-
-    const response = await fetch(`${baseUrl}/data/${filename}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
-      }
-    });
-
-    if (!response.ok) {
-      console.error(`HTTP error! status: ${response.status}`);
-      throw new Error('Failed to fetch local JSON');
-    }
-
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('Invalid content type');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`Error loading ${filename}:`, error);
-    return null;
-  }
-};
-
 export const getCoinsMarkets = async (params = {}) => {
   try {
     const queryParams = new URLSearchParams({

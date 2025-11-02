@@ -105,7 +105,7 @@ export default function PortfolioCalculator() {
     if (portfolio.length > 0) {
       updatePortfolioCurrency();
     }
-  }, [lang]); // Update when language changes
+  }, [lang, portfolio]); // Update when language changes
 
   // Save to localStorage whenever portfolio changes
   useEffect(() => {
