@@ -58,14 +58,14 @@ const PriceChart = ({
     const fetchData = async () => {
       try {
         setError(null);
-
-        // Always get data from getCoinMarketChart for both chart types
         const data = await getCoinMarketChart(coinId, parseInt(timeRange));
+
         if (!data?.prices?.length) {
           throw new Error("Invalid chart data received");
         }
 
         if (chartType === "line") {
+          // Format data for line chart
           const formattedData = data.prices.map(([timestamp, price]) => ({
             x: timestamp,
             y: lang === "id" ? price * 15500 : price,
@@ -83,10 +83,9 @@ const PriceChart = ({
             ],
           });
         } else if (chartType === "candle") {
-          // Convert price data to OHLC format using time windows
+          // Convert price data to OHLC format
           const candleData = [];
           const timeWindow = 3600000; // 1 hour in milliseconds
-
           let currentWindow = {
             timestamp: data.prices[0][0],
             open: data.prices[0][1],
